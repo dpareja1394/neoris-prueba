@@ -3,6 +3,7 @@ package com.neoris.tst.pruebatecnica.request;
 import com.neoris.tst.pruebatecnica.utility.validations.CrearUsuarioValidate;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.NumberFormat;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.NumberFormat;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CrearUsuarioRequest {
 
     @NotNull(message = CrearUsuarioValidate.NOMBRE_REQUIRED)

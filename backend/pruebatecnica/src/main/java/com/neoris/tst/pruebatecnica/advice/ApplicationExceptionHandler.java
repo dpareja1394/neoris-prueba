@@ -1,7 +1,9 @@
 package com.neoris.tst.pruebatecnica.advice;
 
 import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
-import com.neoris.tst.pruebatecnica.exception.PersonaExiste;
+import com.neoris.tst.pruebatecnica.exception.PersonaExistePorIdentificacion;
+import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
+import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,8 +45,24 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(PersonaExiste.class)
-    public Map<String, String> personaYaExisteException(PersonaExiste ex) {
+    @ExceptionHandler(PersonaExistePorIdentificacion.class)
+    public Map<String, String> personaExistePorIdentificacionException(PersonaExistePorIdentificacion ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(PersonaNoExistePorNombre.class)
+    public Map<String, String> personaNoExistePorNombreException(PersonaNoExistePorNombre ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TipoCuentaNoExistePorDescripcion.class)
+    public Map<String, String> tipoCuentaNoExistePorDescripcionException(TipoCuentaNoExistePorDescripcion ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;

@@ -4,7 +4,7 @@ import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Genero;
 import com.neoris.tst.pruebatecnica.domain.Persona;
 import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
-import com.neoris.tst.pruebatecnica.exception.PersonaExiste;
+import com.neoris.tst.pruebatecnica.exception.PersonaExistePorIdentificacion;
 import com.neoris.tst.pruebatecnica.mapper.CrearUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.ClienteRepository;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
@@ -30,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public CrearUsuarioResponse crearUsuario(CrearUsuarioRequest crearUsuarioRequest)
-            throws GeneroNoEncontradoPorAbreviatura, PersonaExiste {
+            throws GeneroNoEncontradoPorAbreviatura, PersonaExistePorIdentificacion {
 
         Persona persona = CrearUsuarioMapper.requestToPersona(crearUsuarioRequest);
         Genero genero = generoService.buscarGeneroPorAbreviatura(crearUsuarioRequest.getGenero());
@@ -38,7 +38,7 @@ public class ClienteServiceImpl implements ClienteService{
 
         persona.setGenero(genero);
 
-        persona = personaService.savePersona(persona);
+        persona = personaService.guardarPersona(persona);
         cliente.setPersona(persona);
 
         cliente = clienteRepository.save(cliente);
