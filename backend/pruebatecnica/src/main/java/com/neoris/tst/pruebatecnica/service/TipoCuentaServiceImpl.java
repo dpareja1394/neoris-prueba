@@ -4,7 +4,9 @@ import com.neoris.tst.pruebatecnica.domain.TipoCuenta;
 import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
 import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
 import com.neoris.tst.pruebatecnica.repository.TipoCuentaRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TipoCuentaServiceImpl implements TipoCuentaService{
     private final TipoCuentaRepository tipoCuentaRepository;
 

@@ -25,7 +25,6 @@ public class CrearUsuarioRequest {
     @NotNull(message = CrearUsuarioValidate.EDAD_NOT_NULL)
     @Min(value = CrearUsuarioValidate.EDAD_MIN_VALUE, message = CrearUsuarioValidate.EDAD_MIN)
     @NumberFormat(style = NumberFormat.Style.NUMBER)
-    //@Digits(integer = 3, fraction = 0, message = CrearUsuarioValidate.EDAD_NUMERIC_VALUE)
     private Short edad;
 
     @NotNull(message = CrearUsuarioValidate.DIRECCION_NOT_NULL)

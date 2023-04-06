@@ -8,7 +8,6 @@ public class CrearUsuarioValidate {
     public final static String EDAD_NOT_NULL = "La edad del usuario es obligatoria";
     public final static String EDAD_MIN = "La edad del usuario debe ser mayor o igual a {value}";
     public final static int EDAD_MIN_VALUE = 18;
-    public final static String EDAD_NUMERIC_VALUE = "La edad debe ser un valor numérico";
     public final static String DIRECCION_NOT_NULL = "La dirección del usuario es obligatoria";
     public final static String DIRECCION_NOT_EMPTY = "La dirección del usuario no puede estar vacía";
     public final static String TELEFONO_NOT_NULL = "El teléfono del usuario es obligatorio";

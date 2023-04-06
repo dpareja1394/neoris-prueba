@@ -36,7 +36,7 @@ public class PersonaServiceImpl implements PersonaService{
     public Persona buscarPersonaPorNombreYEstado(String nombre, Boolean estado) throws PersonaNoExistePorNombre {
         return personaRepository.findByNombreAndEstado(nombre, estado).orElseThrow(
                 () ->new PersonaNoExistePorNombre(
-                        String.format(PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE,
+                        String.format(PERSONA_NO_EXISTE_POR_NOMBRE_MENSAJE,
                                 nombre, estado))
         );
     }

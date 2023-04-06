@@ -3,8 +3,10 @@ package com.neoris.tst.pruebatecnica.service;
 import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Genero;
 import com.neoris.tst.pruebatecnica.domain.Persona;
+import com.neoris.tst.pruebatecnica.exception.ClienteNoExistePorIdentificacion;
 import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
 import com.neoris.tst.pruebatecnica.exception.PersonaExistePorIdentificacion;
+import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
 import com.neoris.tst.pruebatecnica.mapper.CrearUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.ClienteRepository;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
@@ -17,6 +19,9 @@ public class ClienteServiceImpl implements ClienteService{
     private final ClienteRepository clienteRepository;
     private final PersonaService personaService;
     private final GeneroService generoService;
+
+    public final static String CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE =
+            "Cliente con identificación %s y estado %s no existe como cliente";
 
     public ClienteServiceImpl(
             ClienteRepository clienteRepository,
@@ -44,5 +49,19 @@ public class ClienteServiceImpl implements ClienteService{
         cliente = clienteRepository.save(cliente);
 
         return CrearUsuarioMapper.domainToResponse(persona, cliente);
+    }
+
+    @Override
+    public Cliente buscarClientePorNombreYEstado(String nombre, boolean estado)
+            throws PersonaNoExistePorNombre, ClienteNoExistePorIdentificacion {
+        Persona persona = personaService.buscarPersonaPorNombreYEstado(nombre, estado);
+        return clienteRepository
+                .findByPersonaId(
+                        persona.getId())
+                .orElseThrow(
+                        () ->new ClienteNoExistePorIdentificacion(
+                                String.format(CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
+                                        persona.getIdentificacion(), estado))
+                );
     }
 }
