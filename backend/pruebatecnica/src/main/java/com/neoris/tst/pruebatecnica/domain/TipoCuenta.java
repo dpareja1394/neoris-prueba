@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "genero")
-public class Genero {
+@Table(name = "tipo_cuenta")
+public class TipoCuenta {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "genero_id", nullable = false, unique = true)
+    @Column(name = "tipo_cuenta_id", nullable = false, unique = true)
     private Integer id;
 
     @Column(nullable = false, length = 30)

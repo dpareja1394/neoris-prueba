@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "genero")
-public class Genero {
+@Table(name = "tipo_movimiento")
+public class TipoMovimiento {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "genero_id", nullable = false, unique = true)
-    private Integer id;
+    @Column(name = "tipo_movimiento_id", nullable = false, unique = true)
+    private Integer tipo_movimiento_id;
 
     @Column(nullable = false, length = 30)
     private String descripcion;
