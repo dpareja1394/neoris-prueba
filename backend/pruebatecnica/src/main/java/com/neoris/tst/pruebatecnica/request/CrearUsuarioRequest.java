@@ -1,40 +1,47 @@
 package com.neoris.tst.pruebatecnica.request;
 
+import com.neoris.tst.pruebatecnica.utility.validations.CrearUsuarioValidate;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 @Data
-@AllArgsConstructor(staticName = "build")
+@AllArgsConstructor
 @NoArgsConstructor
 public class CrearUsuarioRequest {
 
-    @NotNull(message = "El campo nombres es obligatorio")
+    @NotNull(message = CrearUsuarioValidate.NOMBRE_REQUIRED)
+    @NotEmpty(message = CrearUsuarioValidate.NOMBRE_NOT_EMPTY)
     private String nombres;
 
-    @NotNull(message = "La identificación del usuario es obligatoria")
+    @NotNull(message = CrearUsuarioValidate.IDENTIFICACION_NOT_NULL)
+    @NotEmpty(message = CrearUsuarioValidate.IDENTIFICACION_NOT_EMPTY)
     private String identificacion;
 
-    @NotNull(message = "La edad del usuario es obligatoria")
-    @Min(value = 18, message = "La edad del usuario debe ser mayor o igual a 18 años")
+    @NotNull(message = CrearUsuarioValidate.EDAD_NOT_NULL)
+    @Min(value = 18, message = CrearUsuarioValidate.EDAD_MIN)
     private Short edad;
 
-    @NotNull(message = "La dirección del usuario es obligatoria")
+    @NotNull(message = CrearUsuarioValidate.DIRECCION_NOT_NULL)
+    @NotEmpty(message = CrearUsuarioValidate.DIRECCION_NOT_EMPTY)
     private String direccion;
 
-    @NotNull(message = "El teléfono del usuario es obligatoria")
+    @NotNull(message = CrearUsuarioValidate.TELEFONO_NOT_NULL)
+    @NotEmpty(message = CrearUsuarioValidate.TELEFONO_NOT_EMPTY)
     private String telefono;
 
-    @NotNull(message = "La contraseña es obligatoria")
+    @NotNull(message = CrearUsuarioValidate.CONTRASENA_NOT_NULL)
+    @NotEmpty(message = CrearUsuarioValidate.CONTRASENA_NOT_EMPTY)
     private String contrasena;
 
-    @NotNull(message = "El género es requerido")
+    @NotNull(message = CrearUsuarioValidate.GENERO_NOT_NULL)
+    @NotEmpty(message = CrearUsuarioValidate.GENERO_NOT_EMPTY)
     private String genero;
 
-    @NotNull(message = "Se debe ingresar el estado del usuario")
+    @NotNull(message = CrearUsuarioValidate.ESTADO_NOT_NULL)
     private Boolean estado;
 
 }
