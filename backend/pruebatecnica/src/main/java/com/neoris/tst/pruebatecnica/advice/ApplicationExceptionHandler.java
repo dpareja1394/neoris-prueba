@@ -1,6 +1,9 @@
 package com.neoris.tst.pruebatecnica.advice;
 
+import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
+import com.neoris.tst.pruebatecnica.exception.PersonaExiste;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +23,30 @@ public class ApplicationExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public Map<String, String> handleNotReadable(HttpMessageNotReadableException ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(GeneroNoEncontradoPorAbreviatura.class)
+    public Map<String, String> generoNoEncontradoException(GeneroNoEncontradoPorAbreviatura ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(PersonaExiste.class)
+    public Map<String, String> personaYaExisteException(PersonaExiste ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 

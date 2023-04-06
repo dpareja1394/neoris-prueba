@@ -1,12 +1,11 @@
 package com.neoris.tst.pruebatecnica.request;
 
 import com.neoris.tst.pruebatecnica.utility.validations.CrearUsuarioValidate;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +21,9 @@ public class CrearUsuarioRequest {
     private String identificacion;
 
     @NotNull(message = CrearUsuarioValidate.EDAD_NOT_NULL)
-    @Min(value = 18, message = CrearUsuarioValidate.EDAD_MIN)
+    @Min(value = CrearUsuarioValidate.EDAD_MIN_VALUE, message = CrearUsuarioValidate.EDAD_MIN)
+    @NumberFormat(style = NumberFormat.Style.NUMBER)
+    //@Digits(integer = 3, fraction = 0, message = CrearUsuarioValidate.EDAD_NUMERIC_VALUE)
     private Short edad;
 
     @NotNull(message = CrearUsuarioValidate.DIRECCION_NOT_NULL)
@@ -39,6 +40,7 @@ public class CrearUsuarioRequest {
 
     @NotNull(message = CrearUsuarioValidate.GENERO_NOT_NULL)
     @NotEmpty(message = CrearUsuarioValidate.GENERO_NOT_EMPTY)
+    @Pattern(regexp = CrearUsuarioValidate.GENERO_PATTERN_REGEX, message = CrearUsuarioValidate.GENERO_PATTERN)
     private String genero;
 
     @NotNull(message = CrearUsuarioValidate.ESTADO_NOT_NULL)
