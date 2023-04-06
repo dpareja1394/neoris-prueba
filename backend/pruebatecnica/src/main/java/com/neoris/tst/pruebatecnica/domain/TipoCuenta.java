@@ -20,6 +20,9 @@ public class TipoCuenta {
     @Column(name = "tipo_cuenta_id", nullable = false, unique = true)
     private Integer id;
 
+    @Column(nullable = false, length = 2)
+    private String abreviatura;
+
     @Column(nullable = false, length = 30)
     private String descripcion;
 

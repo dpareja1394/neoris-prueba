@@ -20,6 +20,9 @@ public class Genero {
     @Column(name = "genero_id", nullable = false, unique = true)
     private Integer id;
 
+    @Column(nullable = false, length = 2)
+    private String abreviatura;
+
     @Column(nullable = false, length = 30)
     private String descripcion;
 

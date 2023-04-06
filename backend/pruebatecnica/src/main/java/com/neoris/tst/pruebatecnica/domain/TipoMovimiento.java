@@ -20,6 +20,9 @@ public class TipoMovimiento {
     @Column(name = "tipo_movimiento_id", nullable = false, unique = true)
     private Integer tipo_movimiento_id;
 
+    @Column(nullable = false, length = 2)
+    private String abreviatura;
+
     @Column(nullable = false, length = 30)
     private String descripcion;
 
