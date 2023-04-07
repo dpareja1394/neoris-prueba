@@ -35,7 +35,7 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public CrearUsuarioResponse crearUsuario(CrearUsuarioRequest crearUsuarioRequest)
-            throws GeneroNoEncontradoPorAbreviatura, PersonaExistePorIdentificacion {
+            throws GeneroException, PersonaException {
 
         Persona persona = CrearUsuarioMapper.requestToPersona(crearUsuarioRequest);
         Genero genero = generoService.buscarGeneroPorAbreviatura(crearUsuarioRequest.getGenero());
@@ -53,13 +53,13 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Override
     public Cliente buscarClientePorNombreYEstado(String nombre, boolean estado)
-            throws PersonaNoExistePorNombre, ClienteNoExistePorNombreYEstado {
+            throws PersonaException, ClienteException {
         Persona persona = personaService.buscarPersonaPorNombreYEstado(nombre, estado);
         return clienteRepository
                 .findByPersonaId(
                         persona.getId())
                 .orElseThrow(
-                        () ->new ClienteNoExistePorNombreYEstado(
+                        () ->new ClienteException(
                                 String.format(CLIENTE_NO_EXISTE_POR_NOMBRE_MENSAJE,
                                         persona.getIdentificacion(), estado))
                 );

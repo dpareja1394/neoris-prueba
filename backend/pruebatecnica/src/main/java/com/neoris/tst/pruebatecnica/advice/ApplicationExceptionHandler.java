@@ -34,82 +34,59 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(GeneroNoEncontradoPorAbreviatura.class)
-    public Map<String, String> generoNoEncontradoException(GeneroNoEncontradoPorAbreviatura ex) {
+    @ExceptionHandler(ClienteException.class)
+    public Map<String, String> clienteException(ClienteException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(PersonaExistePorIdentificacion.class)
-    public Map<String, String> personaExistePorIdentificacionException(PersonaExistePorIdentificacion ex) {
+    @ExceptionHandler(CuentaException.class)
+    public Map<String, String> cuentaException(CuentaException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(PersonaNoExistePorNombre.class)
-    public Map<String, String> personaNoExistePorNombreException(PersonaNoExistePorNombre ex) {
+    @ExceptionHandler(GeneroException.class)
+    public Map<String, String> generoException(GeneroException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(TipoCuentaNoExistePorDescripcion.class)
-    public Map<String, String> tipoCuentaNoExistePorDescripcionException(TipoCuentaNoExistePorDescripcion ex) {
+    @ExceptionHandler(MovimientoException.class)
+    public Map<String, String> movimientoException(MovimientoException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(ClienteNoExistePorIdentificacion.class)
-    public Map<String, String> clienteNoExistePorIdentificacionException(ClienteNoExistePorIdentificacion ex) {
+    @ExceptionHandler(PersonaException.class)
+    public Map<String, String> personaException(PersonaException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(CuentaExistePorClienteTipoCuentaEstado.class)
-    public Map<String, String> cuentaExistePorClienteTipoCuentaEstadoException(CuentaExistePorClienteTipoCuentaEstado ex) {
+    @ExceptionHandler(TipoCuentaException.class)
+    public Map<String, String> tipoCuentaException(TipoCuentaException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(TipoMovimientoNoExistePorDescripcion.class)
-    public Map<String, String> tipoMovimientoNoExistePorDescripcionException(TipoMovimientoNoExistePorDescripcion ex) {
+    @ExceptionHandler(TipoMovimientoException.class)
+    public Map<String, String> tipoMovimientoException(TipoMovimientoException ex) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(CuentaNoExistePorNumeroTipoCuentaEstado.class)
-    public Map<String, String> cuentaNoExistePorNumeroTipoCuentaEstadoException(CuentaNoExistePorNumeroTipoCuentaEstado ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(RetiroExcedeSaldoCuenta.class)
-    public Map<String, String> retiroExcedeSaldoCuentaException(RetiroExcedeSaldoCuenta ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
-    //
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(ClienteNoExistePorNombreYEstado.class)
-    public Map<String, String> clienteNoExistePorNombreYEstadoException(ClienteNoExistePorNombreYEstado ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
-        return errorMap;
-    }
 }

@@ -1,9 +1,9 @@
 package com.neoris.tst.pruebatecnica.controller;
 
-import com.neoris.tst.pruebatecnica.exception.CuentaNoExistePorNumeroTipoCuentaEstado;
-import com.neoris.tst.pruebatecnica.exception.RetiroExcedeSaldoCuenta;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
-import com.neoris.tst.pruebatecnica.exception.TipoMovimientoNoExistePorDescripcion;
+import com.neoris.tst.pruebatecnica.exception.CuentaException;
+import com.neoris.tst.pruebatecnica.exception.MovimientoException;
+import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
+import com.neoris.tst.pruebatecnica.exception.TipoMovimientoException;
 import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
 import com.neoris.tst.pruebatecnica.service.MovimientoService;
@@ -28,9 +28,7 @@ public class MovimientoController {
 
     @PostMapping
     public ResponseEntity<RealizarMovimientoResponse> realizarMovimiento
-            (@RequestBody @Valid RealizarMovimientoRequest realizarMovimientoRequest)
-            throws RetiroExcedeSaldoCuenta, TipoMovimientoNoExistePorDescripcion,
-            TipoCuentaNoExistePorDescripcion, CuentaNoExistePorNumeroTipoCuentaEstado {
+            (@RequestBody @Valid RealizarMovimientoRequest realizarMovimientoRequest) throws CuentaException, TipoCuentaException, TipoMovimientoException, MovimientoException {
         return new ResponseEntity(movimientoService.realizarMovimiento(realizarMovimientoRequest), HttpStatus.CREATED);
     }
 

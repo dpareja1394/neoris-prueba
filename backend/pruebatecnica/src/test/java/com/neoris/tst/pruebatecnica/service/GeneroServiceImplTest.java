@@ -1,7 +1,7 @@
 package com.neoris.tst.pruebatecnica.service;
 
 import com.neoris.tst.pruebatecnica.domain.Genero;
-import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
+import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.repository.GeneroRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class GeneroServiceImplTest {
         Genero result = null;
         try {
             result = generoService.buscarGeneroPorAbreviatura("M");
-        } catch (GeneroNoEncontradoPorAbreviatura e) {
+        } catch (GeneroException e) {
             Assertions.fail("No debería fallar la prueba");
         }
         Assertions.assertNotNull(result);
@@ -45,7 +45,7 @@ public class GeneroServiceImplTest {
 
     @Test
     public void testBuscarGeneroPorAbreviaturaFail() {
-        assertThrows(GeneroNoEncontradoPorAbreviatura.class, () -> {
+        assertThrows(GeneroException.class, () -> {
             generoService.buscarGeneroPorAbreviatura("M");
         });
     }

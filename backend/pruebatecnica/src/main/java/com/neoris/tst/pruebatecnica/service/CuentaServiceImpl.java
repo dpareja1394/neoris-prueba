@@ -28,8 +28,8 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public CrearCuentaUsuarioResponse crearCuentaUsuario(CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
-            throws PersonaNoExistePorNombre,
-            TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado, ClienteNoExistePorNombreYEstado {
+            throws PersonaException,
+            TipoCuentaException, CuentaException, ClienteException {
         Cliente cliente = clienteService.buscarClientePorNombreYEstado
                 (crearCuentaUsuarioRequest.getNombreCliente(), true);
 
@@ -38,7 +38,7 @@ public class CuentaServiceImpl implements CuentaService {
 
         if (cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
                 (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId(), true)) {
-            throw new CuentaExistePorClienteTipoCuentaEstado(
+            throw new CuentaException(
                     String.format(CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
                             tipoCuenta.getDescripcion().toLowerCase(),
                             crearCuentaUsuarioRequest.getNumeroCuenta(),
@@ -57,7 +57,7 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
-            throws TipoCuentaNoExistePorDescripcion, CuentaNoExistePorNumeroTipoCuentaEstado {
+            throws TipoCuentaException, CuentaException {
 
         TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
                 (tipoCuentaDescripcion, true);
@@ -65,7 +65,7 @@ public class CuentaServiceImpl implements CuentaService {
         return cuentaRepository
                 .findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado(numeroCuenta, tipoCuenta.getId(), true)
                 .orElseThrow(
-                        () -> new CuentaNoExistePorNumeroTipoCuentaEstado(
+                        () -> new CuentaException(
                                 String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE, tipoCuentaDescripcion, numeroCuenta, true)
                         )
                 );

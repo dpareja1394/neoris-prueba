@@ -26,8 +26,7 @@ public class CuentaController {
     @PostMapping
     public ResponseEntity<CrearCuentaUsuarioResponse> crearCuentaUsuario
             (@RequestBody @Valid CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
-            throws TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado,
-            PersonaNoExistePorNombre, ClienteNoExistePorIdentificacion, ClienteNoExistePorNombreYEstado {
+            throws CuentaException, PersonaException, TipoCuentaException, ClienteException {
         return new ResponseEntity(cuentaService.crearCuentaUsuario(crearCuentaUsuarioRequest), HttpStatus.CREATED);
     }
 

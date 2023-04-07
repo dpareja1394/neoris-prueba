@@ -3,10 +3,10 @@ package com.neoris.tst.pruebatecnica.service;
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.Movimiento;
 import com.neoris.tst.pruebatecnica.domain.TipoMovimiento;
-import com.neoris.tst.pruebatecnica.exception.CuentaNoExistePorNumeroTipoCuentaEstado;
-import com.neoris.tst.pruebatecnica.exception.RetiroExcedeSaldoCuenta;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
-import com.neoris.tst.pruebatecnica.exception.TipoMovimientoNoExistePorDescripcion;
+import com.neoris.tst.pruebatecnica.exception.CuentaException;
+import com.neoris.tst.pruebatecnica.exception.MovimientoException;
+import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
+import com.neoris.tst.pruebatecnica.exception.TipoMovimientoException;
 import com.neoris.tst.pruebatecnica.mapper.RealizarMovimientoMapper;
 import com.neoris.tst.pruebatecnica.repository.MovimientoRepository;
 import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
@@ -35,8 +35,8 @@ public class MovimientoServiceImpl implements MovimientoService{
 
     @Override
     public RealizarMovimientoResponse realizarMovimiento(RealizarMovimientoRequest movimientoRequest)
-            throws TipoCuentaNoExistePorDescripcion, CuentaNoExistePorNumeroTipoCuentaEstado,
-            TipoMovimientoNoExistePorDescripcion, RetiroExcedeSaldoCuenta {
+            throws TipoCuentaException, CuentaException,
+            TipoMovimientoException, MovimientoException {
         //1. Buscar la cuenta por número y tipo de cuenta
         Cuenta cuenta = cuentaService
                 .buscarCuentaPorNumeroYTipoCuenta(movimientoRequest.getNumeroCuenta(),
@@ -60,10 +60,10 @@ public class MovimientoServiceImpl implements MovimientoService{
     }
 
     private Movimiento efectuarRetiro
-            (RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento) throws RetiroExcedeSaldoCuenta {
+            (RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento) throws MovimientoException {
         //4. Si es retiro validar que el valor a retirar no sea mayor al saldo de la cuenta
         if (movimientoRequest.getValor().compareTo(cuenta.getSaldoActual()) > 0) {
-            throw new RetiroExcedeSaldoCuenta(RETIRO_EXCEDE_SALDO_CUENTA_MENSAJE);
+            throw new MovimientoException(RETIRO_EXCEDE_SALDO_CUENTA_MENSAJE);
         }
 
         Movimiento movimiento = RealizarMovimientoMapper.requestToMovimiento(movimientoRequest, cuenta, tipoMovimiento);

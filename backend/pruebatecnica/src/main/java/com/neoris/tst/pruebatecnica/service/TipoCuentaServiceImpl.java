@@ -1,8 +1,7 @@
 package com.neoris.tst.pruebatecnica.service;
 
 import com.neoris.tst.pruebatecnica.domain.TipoCuenta;
-import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
+import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
 import com.neoris.tst.pruebatecnica.repository.TipoCuentaRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +17,9 @@ public class TipoCuentaServiceImpl implements TipoCuentaService{
     }
 
     @Override
-    public TipoCuenta buscarTipoCuentaPorDescripcionYEstado(String descripcion, Boolean estado) throws TipoCuentaNoExistePorDescripcion {
+    public TipoCuenta buscarTipoCuentaPorDescripcionYEstado(String descripcion, Boolean estado) throws TipoCuentaException {
         return tipoCuentaRepository.findByDescripcionAndEstado(descripcion, estado).orElseThrow(
-                () ->new TipoCuentaNoExistePorDescripcion(
+                () ->new TipoCuentaException(
                         String.format(TIPO_CUENTA_NO_EXISTE_POR_DESCRIPCION_MENSAJE,
                                 descripcion, estado))
         );

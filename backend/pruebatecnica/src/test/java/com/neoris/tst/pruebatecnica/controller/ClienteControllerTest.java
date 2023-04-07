@@ -1,7 +1,7 @@
 package com.neoris.tst.pruebatecnica.controller;
 
-import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
-import com.neoris.tst.pruebatecnica.exception.PersonaExistePorIdentificacion;
+import com.neoris.tst.pruebatecnica.exception.GeneroException;
+import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
 import com.neoris.tst.pruebatecnica.service.PersonaService;
@@ -34,7 +34,7 @@ class ClienteControllerTest {
     private PersonaService personaService;
 
     @Test
-    void crearUsuario() throws GeneroNoEncontradoPorAbreviatura, PersonaExistePorIdentificacion {
+    void crearUsuario() throws GeneroException, PersonaException {
         // Definir el comportamiento deseado del servicio
         when(clienteService.crearUsuario(any())).thenReturn(ResponseConstante.CREAR_USUARIO_RESPONSE_OK);
 

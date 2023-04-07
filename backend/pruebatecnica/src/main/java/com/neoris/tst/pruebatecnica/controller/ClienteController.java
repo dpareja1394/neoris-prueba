@@ -1,7 +1,7 @@
 package com.neoris.tst.pruebatecnica.controller;
 
-import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
-import com.neoris.tst.pruebatecnica.exception.PersonaExistePorIdentificacion;
+import com.neoris.tst.pruebatecnica.exception.GeneroException;
+import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
 import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
@@ -26,7 +26,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<CrearUsuarioResponse> crearUsuario(@RequestBody @Valid CrearUsuarioRequest crearUsuarioRequest)
-            throws GeneroNoEncontradoPorAbreviatura, PersonaExistePorIdentificacion {
+            throws GeneroException, PersonaException {
         return new ResponseEntity(clienteService.crearUsuario(crearUsuarioRequest), HttpStatus.CREATED);
     }
 
