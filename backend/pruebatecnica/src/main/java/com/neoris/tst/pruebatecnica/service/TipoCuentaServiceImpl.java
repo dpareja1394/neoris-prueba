@@ -6,12 +6,12 @@ import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
 import com.neoris.tst.pruebatecnica.repository.TipoCuentaRepository;
 import org.springframework.stereotype.Service;
 
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.TIPO_CUENTA_NO_EXISTE_POR_DESCRIPCION_MENSAJE;
+
 @Service
 public class TipoCuentaServiceImpl implements TipoCuentaService{
     private final TipoCuentaRepository tipoCuentaRepository;
 
-    public final static String TIPO_CUENTA_NO_EXISTE_POR_DESCRIPCION_MENSAJE =
-            "El Tipo de Cuenta %s con estado %s no existe en el sistema";
 
     public TipoCuentaServiceImpl(TipoCuentaRepository tipoCuentaRepository) {
         this.tipoCuentaRepository = tipoCuentaRepository;

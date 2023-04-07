@@ -5,11 +5,12 @@ import com.neoris.tst.pruebatecnica.exception.GeneroNoEncontradoPorAbreviatura;
 import com.neoris.tst.pruebatecnica.repository.GeneroRepository;
 import org.springframework.stereotype.Service;
 
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.GENERO_NO_ENCONTRADO_MENSAJE;
+
 @Service
 public class GeneroServiceImpl implements GeneroService{
 
     private final GeneroRepository generoRepository;
-    public final static String GENERO_NO_ENCONTRADO_MENSAJE = "El género %s no se ha encontrado";
 
     public GeneroServiceImpl(GeneroRepository generoRepository) {
         this.generoRepository = generoRepository;

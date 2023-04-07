@@ -3,15 +3,15 @@ package com.neoris.tst.pruebatecnica.service;
 import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.TipoCuenta;
-import com.neoris.tst.pruebatecnica.exception.ClienteNoExistePorIdentificacion;
-import com.neoris.tst.pruebatecnica.exception.CuentaExistePorClienteTipoCuentaEstado;
-import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
+import com.neoris.tst.pruebatecnica.exception.*;
 import com.neoris.tst.pruebatecnica.mapper.CrearCuentaUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.CuentaRepository;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
 import org.springframework.stereotype.Service;
+
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE;
 
 @Service
 public class CuentaServiceImpl implements CuentaService {
@@ -19,9 +19,6 @@ public class CuentaServiceImpl implements CuentaService {
     private final CuentaRepository cuentaRepository;
     private final TipoCuentaService tipoCuentaService;
     private final ClienteService clienteService;
-
-    public final static String CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE =
-            "La cuenta de %s número %s para el cliente %s y estado %s ya se encuentra registrada en el sistema";
 
     public CuentaServiceImpl(CuentaRepository cuentaRepository, ClienteService clienteService, TipoCuentaService tipoCuentaService) {
         this.cuentaRepository = cuentaRepository;
@@ -39,7 +36,7 @@ public class CuentaServiceImpl implements CuentaService {
         TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
                 (crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), true);
 
-        if(cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
+        if (cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
                 (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId(), true)) {
             throw new CuentaExistePorClienteTipoCuentaEstado(
                     String.format(CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
@@ -56,5 +53,26 @@ public class CuentaServiceImpl implements CuentaService {
         cuenta = cuentaRepository.save(cuenta);
 
         return CrearCuentaUsuarioMapper.domainToResponse(cuenta, tipoCuenta, crearCuentaUsuarioRequest.getNombreCliente());
+    }
+
+    @Override
+    public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
+            throws TipoCuentaNoExistePorDescripcion, CuentaNoExistePorNumeroTipoCuentaEstado {
+
+        TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
+                (tipoCuentaDescripcion, true);
+
+        return cuentaRepository
+                .findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado(numeroCuenta, tipoCuenta.getId(), true)
+                .orElseThrow(
+                        () -> new CuentaNoExistePorNumeroTipoCuentaEstado(
+                                String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE, tipoCuentaDescripcion, numeroCuenta, true)
+                        )
+                );
+    }
+
+    @Override
+    public Cuenta efectuarMovimientoEnCuenta(Cuenta cuenta) {
+        return cuentaRepository.save(cuenta);
     }
 }

@@ -81,4 +81,28 @@ public class ApplicationExceptionHandler {
         return errorMap;
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(TipoMovimientoNoExistePorDescripcion.class)
+    public Map<String, String> tipoMovimientoNoExistePorDescripcionException(TipoMovimientoNoExistePorDescripcion ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(CuentaNoExistePorNumeroTipoCuentaEstado.class)
+    public Map<String, String> cuentaNoExistePorNumeroTipoCuentaEstadoException(CuentaNoExistePorNumeroTipoCuentaEstado ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RetiroExcedeSaldoCuenta.class)
+    public Map<String, String> retiroExcedeSaldoCuentaException(RetiroExcedeSaldoCuenta ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
+
 }

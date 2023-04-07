@@ -13,6 +13,8 @@ import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
 import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import org.springframework.stereotype.Service;
 
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE;
+
 @Service
 public class ClienteServiceImpl implements ClienteService{
 
@@ -20,8 +22,7 @@ public class ClienteServiceImpl implements ClienteService{
     private final PersonaService personaService;
     private final GeneroService generoService;
 
-    public final static String CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE =
-            "Cliente con identificación %s y estado %s no existe como cliente";
+
 
     public ClienteServiceImpl(
             ClienteRepository clienteRepository,

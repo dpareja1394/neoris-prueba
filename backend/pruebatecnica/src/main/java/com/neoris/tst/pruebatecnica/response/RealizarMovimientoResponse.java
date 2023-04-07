@@ -16,6 +16,8 @@ public class RealizarMovimientoResponse {
     @JsonProperty("tipo")
     private String tipoCuentaDescripcion;
 
+    private BigDecimal saldoInicial;
+
     private boolean estado;
 
     @JsonProperty("movimiento")

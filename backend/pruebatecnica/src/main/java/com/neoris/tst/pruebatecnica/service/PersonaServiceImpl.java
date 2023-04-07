@@ -6,15 +6,13 @@ import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
 import com.neoris.tst.pruebatecnica.repository.PersonaRepository;
 import org.springframework.stereotype.Service;
 
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.PERSONA_NO_EXISTE_POR_NOMBRE_MENSAJE;
+
 @Service
 public class PersonaServiceImpl implements PersonaService{
 
     private final PersonaRepository personaRepository;
-
-    public final static String PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE =
-            "La persona con identificación %s y estado %s ya existe en el sistema";
-    public final static String PERSONA_NO_EXISTE_POR_NOMBRE_MENSAJE =
-            "%s y estado %s no existe como cliente";
 
     public PersonaServiceImpl(PersonaRepository personaRepository) {
         this.personaRepository = personaRepository;

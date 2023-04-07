@@ -14,6 +14,6 @@ Buscar cuenta por numero
 Buscar cuentas de un usuario
 
 
-*Ejecutar Movimiento
+*Ejecutar Movimiento(Post MovimientoController)
 Listar movimientos por fechas y usuario
 Listar movimientos por fechas y número de cuenta

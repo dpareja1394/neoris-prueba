@@ -18,7 +18,7 @@ public class TipoMovimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tipo_movimiento_id", nullable = false, unique = true)
-    private Integer tipo_movimiento_id;
+    private Integer id;
 
     @Column(nullable = false, length = 2)
     private String abreviatura;
