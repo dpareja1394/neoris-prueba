@@ -9,5 +9,7 @@ import java.util.Optional;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Integer> {
     boolean existsByIdentificacionAndEstado(String identificacion, Boolean estado);
+    boolean existsByIdentificacion(String identificacion);
     Optional<Persona> findByNombreAndEstado(String nombre, Boolean estado);
+    Optional<Persona> findByIdentificacion(String identificacion);
 }

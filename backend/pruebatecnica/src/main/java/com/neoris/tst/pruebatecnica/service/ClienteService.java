@@ -18,5 +18,5 @@ public interface ClienteService {
     Cliente buscarClientePorNombreYEstado(String nombre, boolean estado)
             throws PersonaException, ClienteException;
 
-    InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest);
+    InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest) throws PersonaException, ClienteException;
 }

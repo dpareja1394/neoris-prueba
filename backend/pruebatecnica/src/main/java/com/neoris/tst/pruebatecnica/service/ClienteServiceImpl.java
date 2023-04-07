@@ -12,7 +12,7 @@ import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.InactivarUsuarioResponse;
 import org.springframework.stereotype.Service;
 
-import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CLIENTE_NO_EXISTE_POR_NOMBRE_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
 @Service
 public class ClienteServiceImpl implements ClienteService{
@@ -66,8 +66,31 @@ public class ClienteServiceImpl implements ClienteService{
     }
 
     @Override
-    public InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest) {
+    public InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest)
+            throws PersonaException, ClienteException {
+        // Consultar persona
+        Persona persona = personaService.
+                buscarPersonaPorIdentificacion(inactivarUsuarioRequest.getIdentificacion());
 
-        return null;
+        Cliente cliente = clienteRepository.findByPersonaId(persona.getId()).orElseThrow(
+                () -> new ClienteException(
+                        String.format(CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
+                                inactivarUsuarioRequest.getIdentificacion()))
+        );
+
+        if(!persona.getEstado() && !cliente.getEstado()) {
+            throw new PersonaException(
+                    String.format(PERSONA_YA_ESTA_INACTIVA_MENSAJE, inactivarUsuarioRequest.getIdentificacion()));
+        }
+
+        persona = personaService.inactivarPersona(persona);
+        cliente.setEstado(false);
+        cliente = clienteRepository.save(cliente);
+
+        return InactivarUsuarioResponse.builder()
+                .estado(persona.getEstado())
+                .identificacion(persona.getIdentificacion())
+                .nombre(persona.getNombre())
+                .build();
     }
 }

@@ -6,7 +6,7 @@ import com.neoris.tst.pruebatecnica.exception.PersonaException;
 public interface PersonaService {
     Persona guardarPersona(Persona persona) throws PersonaException;
     Persona buscarPersonaPorNombreYEstado(String nombre, Boolean estado) throws PersonaException;
-
-    Persona buscarPersonaPorIdentificacionYEstado(String identificacion, Boolean estado);
+    Persona buscarPersonaPorIdentificacion(String identificacion) throws PersonaException;
+    Persona inactivarPersona(Persona persona);
 
 }

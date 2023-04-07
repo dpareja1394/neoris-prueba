@@ -5,8 +5,7 @@ import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.repository.PersonaRepository;
 import org.springframework.stereotype.Service;
 
-import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE;
-import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.PERSONA_NO_EXISTE_POR_NOMBRE_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
 @Service
 public class PersonaServiceImpl implements PersonaService{
@@ -21,9 +20,9 @@ public class PersonaServiceImpl implements PersonaService{
     public Persona guardarPersona(Persona persona) throws PersonaException {
 
         // Validar si la persona ya existe en base de datos;
-        if(personaRepository.existsByIdentificacionAndEstado(persona.getIdentificacion(), persona.getEstado())) {
+        if(personaRepository.existsByIdentificacion(persona.getIdentificacion())) {
             throw new PersonaException(
-                    String.format(PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE, persona.getIdentificacion(), persona.getEstado()));
+                    String.format(PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE, persona.getIdentificacion()));
         }
 
         return personaRepository.save(persona);
@@ -39,7 +38,17 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public Persona buscarPersonaPorIdentificacionYEstado(String identificacion, Boolean estado) {
-        return null;
+    public Persona buscarPersonaPorIdentificacion(String identificacion) throws PersonaException {
+        return personaRepository.findByIdentificacion(identificacion).orElseThrow(
+                () ->new PersonaException(
+                        String.format(PERSONA_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
+                                identificacion))
+        );
+    }
+
+    @Override
+    public Persona inactivarPersona(Persona persona) {
+        persona.setEstado(false);
+        return personaRepository.save(persona);
     }
 }
