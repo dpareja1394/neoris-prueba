@@ -13,7 +13,6 @@ public class RequestConstante {
             .telefono("098254785")
             .contrasena("1234")
             .genero("M")
-            .estado(true)
             .build();
 
     public static CrearUsuarioRequest CREAR_USUARIO_NOMBRE_NULL = CrearUsuarioRequest.builder()
@@ -23,7 +22,6 @@ public class RequestConstante {
             .telefono("098254785")
             .contrasena("1234")
             .genero("M")
-            .estado(true)
             .build();
 
 }

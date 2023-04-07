@@ -10,7 +10,7 @@ public class CrearCuentaUsuarioMapper {
     public static Cuenta requestToCuenta(CrearCuentaUsuarioRequest cuentaUsuarioRequest) {
         return Cuenta.builder()
                 .numeroCuenta(cuentaUsuarioRequest.getNumeroCuenta())
-                .estado(cuentaUsuarioRequest.getEstado())
+                .estado(true)
                 .saldoInicial(cuentaUsuarioRequest.getSadoInicial())
                 .saldoActual(cuentaUsuarioRequest.getSadoInicial())
                 .build();

@@ -44,7 +44,4 @@ public class CrearUsuarioRequest {
     @Pattern(regexp = CrearUsuarioValidate.GENERO_PATTERN_REGEX, message = CrearUsuarioValidate.GENERO_PATTERN)
     private String genero;
 
-    @NotNull(message = CrearUsuarioValidate.ESTADO_NOT_NULL)
-    private Boolean estado;
-
 }

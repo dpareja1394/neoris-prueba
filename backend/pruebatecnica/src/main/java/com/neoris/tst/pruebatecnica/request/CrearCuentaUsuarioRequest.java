@@ -30,9 +30,6 @@ public class CrearCuentaUsuarioRequest {
     @Min(value = CrearCuentaUsuarioValidate.SALDO_INICIAL_MIN_VALUE, message = CrearCuentaUsuarioValidate.SALDO_INICIAL_MIN)
     private BigDecimal sadoInicial;
 
-    @NotNull(message = CrearCuentaUsuarioValidate.ESTADO_NOT_NULL)
-    private Boolean estado;
-
     @JsonProperty("cliente")
     @NotNull(message = CrearCuentaUsuarioValidate.NOMBRE_NOT_NULL)
     @NotEmpty(message = CrearCuentaUsuarioValidate.NOMBRE_NOT_EMPTY)

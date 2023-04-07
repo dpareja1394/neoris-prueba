@@ -17,7 +17,7 @@ public class GeneroServiceImpl implements GeneroService{
 
     @Override
     public Genero buscarGeneroPorAbreviatura(String abreviatura) throws GeneroNoEncontradoPorAbreviatura {
-        Genero genero = generoRepository.findGeneroByAbreviatura(abreviatura);
+        Genero genero = generoRepository.findGeneroByAbreviaturaAndEstado(abreviatura, true);
         if(genero == null) {
             throw new GeneroNoEncontradoPorAbreviatura(String.format(GENERO_NO_ENCONTRADO_MENSAJE, abreviatura));
         }

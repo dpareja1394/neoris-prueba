@@ -1,0 +1,19 @@
+*Crear usuario (Post ClienteController)
+Inactivar usuario
+Activar usuario
+Modificar datos
+Buscar usuario por identificación
+Buscar todos
+Eliminar usuario
+
+*Crear cuenta usuario (Post CuentaController)
+Inactivar cuenta de usuario
+Activar cuenta de usuario
+Eliminar cuenta
+Buscar cuenta por numero
+Buscar cuentas de un usuario
+
+
+*Ejecutar Movimiento
+Listar movimientos por fechas y usuario
+Listar movimientos por fechas y número de cuenta

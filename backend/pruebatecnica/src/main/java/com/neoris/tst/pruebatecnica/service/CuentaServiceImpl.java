@@ -34,19 +34,19 @@ public class CuentaServiceImpl implements CuentaService {
             throws ClienteNoExistePorIdentificacion, PersonaNoExistePorNombre,
             TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado {
         Cliente cliente = clienteService.buscarClientePorNombreYEstado
-                (crearCuentaUsuarioRequest.getNombreCliente(), crearCuentaUsuarioRequest.getEstado());
+                (crearCuentaUsuarioRequest.getNombreCliente(), true);
 
         TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
-                (crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), crearCuentaUsuarioRequest.getEstado());
+                (crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), true);
 
         if(cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
-                (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId(), crearCuentaUsuarioRequest.getEstado())) {
+                (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId(), true)) {
             throw new CuentaExistePorClienteTipoCuentaEstado(
                     String.format(CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
                             tipoCuenta.getDescripcion().toLowerCase(),
                             crearCuentaUsuarioRequest.getNumeroCuenta(),
                             crearCuentaUsuarioRequest.getNombreCliente(),
-                            crearCuentaUsuarioRequest.getEstado()));
+                            true));
         }
 
         Cuenta cuenta = CrearCuentaUsuarioMapper.requestToCuenta(crearCuentaUsuarioRequest);

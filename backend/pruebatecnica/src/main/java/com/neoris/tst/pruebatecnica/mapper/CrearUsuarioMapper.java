@@ -13,14 +13,14 @@ public class CrearUsuarioMapper {
                 .identificacion(usuarioRequest.getIdentificacion())
                 .direccion(usuarioRequest.getDireccion())
                 .telefono(usuarioRequest.getTelefono())
-                .estado(usuarioRequest.getEstado())
+                .estado(true)
                 .build();
     }
 
     public static Cliente requestToCliente(CrearUsuarioRequest usuarioRequest) {
         return Cliente.builder()
                 .contrasena(usuarioRequest.getContrasena())
-                .estado(usuarioRequest.getEstado())
+                .estado(true)
                 .build();
     }
 

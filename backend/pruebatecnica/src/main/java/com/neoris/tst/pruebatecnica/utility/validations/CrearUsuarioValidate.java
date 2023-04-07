@@ -18,5 +18,4 @@ public class CrearUsuarioValidate {
     public final static String GENERO_NOT_EMPTY = "El género no puede estar vacío";
     public final static String GENERO_PATTERN_REGEX = "[MF]";
     public final static String GENERO_PATTERN = "El género debe ser F o M";
-    public final static String ESTADO_NOT_NULL = "Se debe ingresar el estado del usuario";
 }
