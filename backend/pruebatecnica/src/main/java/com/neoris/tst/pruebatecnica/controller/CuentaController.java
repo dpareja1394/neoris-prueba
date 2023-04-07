@@ -1,9 +1,6 @@
 package com.neoris.tst.pruebatecnica.controller;
 
-import com.neoris.tst.pruebatecnica.exception.ClienteNoExistePorIdentificacion;
-import com.neoris.tst.pruebatecnica.exception.CuentaExistePorClienteTipoCuentaEstado;
-import com.neoris.tst.pruebatecnica.exception.PersonaNoExistePorNombre;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaNoExistePorDescripcion;
+import com.neoris.tst.pruebatecnica.exception.*;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
 import com.neoris.tst.pruebatecnica.service.CuentaService;
@@ -30,7 +27,7 @@ public class CuentaController {
     public ResponseEntity<CrearCuentaUsuarioResponse> crearCuentaUsuario
             (@RequestBody @Valid CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
             throws TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado,
-            ClienteNoExistePorIdentificacion, PersonaNoExistePorNombre {
+            PersonaNoExistePorNombre, ClienteNoExistePorIdentificacion, ClienteNoExistePorNombreYEstado {
         return new ResponseEntity(cuentaService.crearCuentaUsuario(crearCuentaUsuarioRequest), HttpStatus.CREATED);
     }
 

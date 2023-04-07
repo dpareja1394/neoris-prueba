@@ -17,6 +17,8 @@ public class MensajeExcepcionService {
             "El Tipo de Cuenta %s con estado %s no existe en el sistema";
     public final static String RETIRO_EXCEDE_SALDO_CUENTA_MENSAJE =
             "El valor a retirar es mayor al saldo actual de la cuenta";
+    public final static String CLIENTE_NO_EXISTE_POR_NOMBRE_MENSAJE =
+            "%s con estado %s no existe como cliente";
 
 
 }

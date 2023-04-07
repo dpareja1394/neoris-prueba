@@ -104,5 +104,12 @@ public class ApplicationExceptionHandler {
         errorMap.put("errorMessage", ex.getMessage());
         return errorMap;
     }
-
+    //
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ClienteNoExistePorNombreYEstado.class)
+    public Map<String, String> clienteNoExistePorNombreYEstadoException(ClienteNoExistePorNombreYEstado ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("errorMessage", ex.getMessage());
+        return errorMap;
+    }
 }

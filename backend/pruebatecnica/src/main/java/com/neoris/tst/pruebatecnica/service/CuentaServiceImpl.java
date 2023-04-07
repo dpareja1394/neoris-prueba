@@ -28,8 +28,8 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public CrearCuentaUsuarioResponse crearCuentaUsuario(CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
-            throws ClienteNoExistePorIdentificacion, PersonaNoExistePorNombre,
-            TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado {
+            throws PersonaNoExistePorNombre,
+            TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado, ClienteNoExistePorNombreYEstado {
         Cliente cliente = clienteService.buscarClientePorNombreYEstado
                 (crearCuentaUsuarioRequest.getNombreCliente(), true);
 

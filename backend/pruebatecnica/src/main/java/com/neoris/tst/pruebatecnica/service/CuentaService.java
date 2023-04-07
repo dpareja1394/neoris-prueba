@@ -9,7 +9,7 @@ public interface CuentaService {
 
     CrearCuentaUsuarioResponse crearCuentaUsuario(CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
             throws ClienteNoExistePorIdentificacion, PersonaNoExistePorNombre,
-            TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado;
+            TipoCuentaNoExistePorDescripcion, CuentaExistePorClienteTipoCuentaEstado, ClienteNoExistePorNombreYEstado;
 
     Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws TipoCuentaNoExistePorDescripcion, CuentaNoExistePorNumeroTipoCuentaEstado;
