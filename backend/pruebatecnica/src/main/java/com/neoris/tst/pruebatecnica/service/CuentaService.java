@@ -1,14 +1,17 @@
 package com.neoris.tst.pruebatecnica.service;
 
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
-import com.neoris.tst.pruebatecnica.domain.TipoCuenta;
 import com.neoris.tst.pruebatecnica.exception.ClienteException;
 import com.neoris.tst.pruebatecnica.exception.CuentaException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
+import com.neoris.tst.pruebatecnica.request.ActivarCuentaRequest;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
+import com.neoris.tst.pruebatecnica.request.InactivarCuentaRequest;
+import com.neoris.tst.pruebatecnica.response.ActivarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.InactivarCuentaResponse;
 
 import java.util.List;
 
@@ -27,6 +30,12 @@ public interface CuentaService {
             throws CuentaException, TipoCuentaException;
 
     List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion)
+            throws CuentaException, TipoCuentaException, PersonaException, ClienteException;
+
+    InactivarCuentaResponse inactivarCuenta(InactivarCuentaRequest inactivarCuentaRequest)
+            throws CuentaException, TipoCuentaException, PersonaException, ClienteException;
+
+    ActivarCuentaResponse activarCuenta(ActivarCuentaRequest activarCuentaRequest)
             throws CuentaException, TipoCuentaException, PersonaException, ClienteException;
 
 }

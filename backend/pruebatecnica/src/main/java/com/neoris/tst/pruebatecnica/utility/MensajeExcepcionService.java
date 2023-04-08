@@ -2,12 +2,10 @@ package com.neoris.tst.pruebatecnica.utility;
 
 public class MensajeExcepcionService {
 
-    public final static String CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE =
-            "Cliente con identificación %s no existe como cliente";
     public final static String CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE =
             "La cuenta de %s número %s para el cliente %s y estado %s ya se encuentra registrada en el sistema";
-    public final static String CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE =
-            "La cuenta de %s número %s y estado %s no se ha encontrado en el sistema";
+    public final static String CUENTA_NO_EXISTE_POR_CLIENTE_TIPO_MENSAJE =
+            "La cuenta de %s número %s para el cliente %s y estado %s no se encuentra registrada en el sistema";
     public final static String GENERO_NO_ENCONTRADO_MENSAJE = "El género %s no se ha encontrado";
     public final static String PERSONA_EXISTE_POR_IDENTIFICACION_MENSAJE =
             "La persona con identificación %s ya existe en el sistema";
@@ -35,4 +33,11 @@ public class MensajeExcepcionService {
     public final static String CLIENTE_ELIMINADO = "%s ha sido eliminado como cliente";
 
     public final static String MOVIMIENTO_ERROR_CUENTA_INACTIVA = "No se puede realizar el movimiento puesto que la cuenta está inactiva";
+
+    public final static String CUENTA_YA_ESTA_INACTIVA = "La cuenta de %s número %s ya se encuentra inactiva";
+
+    public final static String CUENTA_YA_ESTA_ACTIVA = "La cuenta de %s número %s ya se encuentra activa";
+
+    public final static String CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE =
+            "La cuenta de %s número %s y estado %s no se encuentra registrada en el sistema";
 }

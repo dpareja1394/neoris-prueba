@@ -1,10 +1,8 @@
 package com.neoris.tst.pruebatecnica.controller;
 
 import com.neoris.tst.pruebatecnica.exception.*;
-import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
-import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
-import com.neoris.tst.pruebatecnica.response.BuscarUsuarioResponse;
-import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
+import com.neoris.tst.pruebatecnica.request.*;
+import com.neoris.tst.pruebatecnica.response.*;
 import com.neoris.tst.pruebatecnica.service.CuentaService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -45,6 +43,20 @@ public class CuentaController {
             @PathVariable @NotNull @NotEmpty String identificacion)
             throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
         return ResponseEntity.ok(cuentaService.consultarCuentasPorUsuario(identificacion));
+    }
+
+    @PutMapping("/inactivar")
+    public ResponseEntity<InactivarCuentaResponse> inactivarCuenta(
+            @RequestBody @Valid InactivarCuentaRequest inactivarCuentaRequest)
+            throws CuentaException, PersonaException, TipoCuentaException, ClienteException {
+        return ResponseEntity.ok(cuentaService.inactivarCuenta(inactivarCuentaRequest));
+    }
+
+    @PutMapping("/activar")
+    public ResponseEntity<ActivarCuentaResponse> activarUsuario(
+            @RequestBody @Valid ActivarCuentaRequest activarCuentaRequest)
+            throws PersonaException, ClienteException, CuentaException, TipoCuentaException {
+        return ResponseEntity.ok(cuentaService.activarCuenta(activarCuentaRequest));
     }
 
 }

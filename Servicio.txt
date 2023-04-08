@@ -8,8 +8,8 @@
 *Eliminar usuario
 
 *Crear cuenta usuario (Post CuentaController)
-Inactivar cuenta de usuario
-Activar cuenta de usuario
+*Inactivar cuenta de usuario
+*Activar cuenta de usuario
 Eliminar cuenta
 *Buscar cuenta por numero y tipo
 *Buscar cuentas de un usuario
