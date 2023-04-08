@@ -20,4 +20,6 @@ public interface CuentaService {
 
     Cuenta efectuarMovimientoEnCuenta(Cuenta cuenta);
 
+    Boolean existenCuentasPorCliente(Integer clienteId);
+
 }

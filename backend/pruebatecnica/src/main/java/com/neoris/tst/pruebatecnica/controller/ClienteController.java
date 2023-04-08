@@ -74,4 +74,10 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.buscarTodosLosClientesPorEstado(estado));
     }
 
+    @DeleteMapping("/eliminar/{identificacion}")
+    public ResponseEntity<String> eliminarUsuario(
+            @PathVariable @NotNull @NotEmpty String identificacion) throws PersonaException, ClienteException {
+        return ResponseEntity.ok(clienteService.eliminarUsuario(identificacion));
+    }
+
 }

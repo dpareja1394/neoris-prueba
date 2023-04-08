@@ -28,16 +28,14 @@ public class ClienteServiceImpl implements ClienteService {
     private final GeneroService generoService;
     private final PersonaRepository personaRepository;
 
-
-
     public ClienteServiceImpl(
             ClienteRepository clienteRepository,
             PersonaService personaService,
-            GeneroService generoService, PersonaRepository personaRepository) {
+            GeneroService generoService,
+            PersonaRepository personaRepository) {
         this.clienteRepository = clienteRepository;
         this.personaService = personaService;
         this.generoService = generoService;
-
         this.personaRepository = personaRepository;
     }
 
@@ -72,15 +70,11 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest)
             throws PersonaException, ClienteException {
-        // Consultar persona
-        Persona persona = personaService.
-                buscarPersonaPorIdentificacion(inactivarUsuarioRequest.getIdentificacion());
+        // Consultar Cliente
+        Cliente cliente = buscarClientePorIdentificacion(inactivarUsuarioRequest.getIdentificacion());
 
-        Cliente cliente = clienteRepository.findByPersonaId(persona.getId()).orElseThrow(
-                () -> new ClienteException(
-                        String.format(CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
-                                inactivarUsuarioRequest.getIdentificacion()))
-        );
+        // Consultar Persona
+        Persona persona = cliente.getPersona();
 
         if(!persona.getEstado() && !cliente.getEstado()) {
             throw new PersonaException(
@@ -99,16 +93,12 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest) throws PersonaException, ClienteException {
-        // Consultar persona
-        Persona persona = personaService.
-                buscarPersonaPorIdentificacion(activarUsuarioRequest.getIdentificacion());
+    public ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest)
+            throws PersonaException, ClienteException {
+        Cliente cliente = buscarClientePorIdentificacion(activarUsuarioRequest.getIdentificacion());
 
-        Cliente cliente = clienteRepository.findByPersonaId(persona.getId()).orElseThrow(
-                () -> new ClienteException(
-                        String.format(CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
-                                activarUsuarioRequest.getIdentificacion()))
-        );
+        // Consultar Persona
+        Persona persona = cliente.getPersona();
 
         if(persona.getEstado() && cliente.getEstado()) {
             throw new PersonaException(
@@ -129,13 +119,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ModificarUsuarioResponse modificarUsuario(ModificarUsuarioRequest modificarUsuarioRequest)
             throws GeneroException, PersonaException, ClienteException {
-        Persona persona = personaService.buscarPersonaPorIdentificacion(modificarUsuarioRequest.getIdentificacion());
-        Genero genero = generoService.buscarGeneroPorAbreviatura(modificarUsuarioRequest.getGenero());
-        Cliente cliente = clienteRepository
-                .findByPersonaId(persona.getId()).orElseThrow(
-                        () ->new ClienteException(
-                                String.format(CLIENTE_NO_EXISTE_POR_NOMBRE_MENSAJE,
-                                        modificarUsuarioRequest.getIdentificacion())));
+        Cliente cliente = buscarClientePorIdentificacion(modificarUsuarioRequest.getIdentificacion());
+        Persona persona = cliente.getPersona();
+        Genero genero = persona.getGenero();
 
         persona = ModificarUsuarioMapper.requestToPersona(modificarUsuarioRequest, persona, genero);
         persona = personaRepository.save(persona);
@@ -164,8 +150,27 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public BuscarUsuarioResponse buscarUsuarioPorIdentificacion(String identificacion)
             throws PersonaException, ClienteException {
+        return BuscarUsuarioMapper.domainToResponse(buscarClientePorIdentificacion(identificacion));
+    }
+
+    private Cliente buscarClientePorIdentificacion(String identificacion) throws PersonaException, ClienteException {
         Persona persona = personaService.buscarPersonaPorIdentificacion(identificacion);
-        Cliente cliente = buscarClientePorPersonaId(persona.getId());
-        return BuscarUsuarioMapper.domainToResponse(cliente);
+        return buscarClientePorPersonaId(persona.getId());
+    }
+
+    @Override
+    public String eliminarUsuario(String identificacion) throws PersonaException, ClienteException {
+        Cliente cliente = buscarClientePorIdentificacion(identificacion);
+        if(!cliente.getCuentas().isEmpty()) {
+            throw new ClienteException(CLIENTE_TIENE_CUENTAS_MENSAJE);
+        }
+
+        Persona persona = cliente.getPersona();
+        String mensajeExito = String.format(CLIENTE_ELIMINADO, persona.getNombre());
+
+        clienteRepository.delete(cliente);
+        personaRepository.delete(persona);
+
+        return mensajeExito;
     }
 }

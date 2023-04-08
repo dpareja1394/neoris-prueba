@@ -75,4 +75,9 @@ public class CuentaServiceImpl implements CuentaService {
     public Cuenta efectuarMovimientoEnCuenta(Cuenta cuenta) {
         return cuentaRepository.save(cuenta);
     }
+
+    @Override
+    public Boolean existenCuentasPorCliente(Integer clienteId) {
+        return cuentaRepository.existsByClienteId(clienteId);
+    }
 }

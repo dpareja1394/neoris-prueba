@@ -5,7 +5,7 @@
 *Buscar usuario por identificación
 *Buscar todos
 *Buscar todos por estado
-Eliminar usuario
+*Eliminar usuario
 
 *Crear cuenta usuario (Post CuentaController)
 Inactivar cuenta de usuario

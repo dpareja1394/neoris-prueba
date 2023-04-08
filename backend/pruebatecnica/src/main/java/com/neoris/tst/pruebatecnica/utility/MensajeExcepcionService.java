@@ -29,4 +29,8 @@ public class MensajeExcepcionService {
     public final static String GENERO_NO_ENCONTRADO_POR_ID_MENSAJE = "El género con id %s no se ha encontrado";
 
     public final static String CLIENTE_NO_EXISTE_MENSAJE = "Cliente no existe";
+
+    public final static String CLIENTE_TIENE_CUENTAS_MENSAJE = "No se puede eliminar el cliente puesto que tiene cuentas asociadas";
+
+    public final static String CLIENTE_ELIMINADO = "%s ha sido eliminado como cliente";
 }
