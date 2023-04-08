@@ -87,7 +87,7 @@ public class ClienteServiceImpl implements ClienteService{
 
         persona = personaService.inactivarPersona(persona);
         cliente.setEstado(false);
-        cliente = clienteRepository.save(cliente);
+        clienteRepository.save(cliente);
 
         return InactivarUsuarioResponse.builder()
                 .estado(persona.getEstado())
@@ -115,7 +115,7 @@ public class ClienteServiceImpl implements ClienteService{
 
         persona = personaService.activarPersona(persona);
         cliente.setEstado(true);
-        cliente = clienteRepository.save(cliente);
+        clienteRepository.save(cliente);
 
         return ActivarUsuarioResponse.builder()
                 .estado(persona.getEstado())

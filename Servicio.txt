@@ -1,6 +1,6 @@
 *Crear usuario (Post ClienteController)
-Inactivar usuario
-Activar usuario
+*Inactivar usuario
+*Activar usuario
 Modificar datos
 Buscar usuario por identificación
 Buscar todos
