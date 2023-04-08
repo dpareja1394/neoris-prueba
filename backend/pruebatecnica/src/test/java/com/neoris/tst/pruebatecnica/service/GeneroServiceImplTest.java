@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -31,7 +33,7 @@ public class GeneroServiceImplTest {
                 .estado(true)
                 .build();
 
-        when(generoRepository.findGeneroByAbreviaturaAndEstado("M", true)).thenReturn(genero);
+        when(generoRepository.findGeneroByAbreviaturaAndEstado("M", true)).thenReturn(Optional.of(genero));
         Genero result = null;
         try {
             result = generoService.buscarGeneroPorAbreviatura("M");
