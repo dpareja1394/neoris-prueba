@@ -6,8 +6,10 @@ import com.neoris.tst.pruebatecnica.domain.Persona;
 import com.neoris.tst.pruebatecnica.exception.*;
 import com.neoris.tst.pruebatecnica.mapper.CrearUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.ClienteRepository;
+import com.neoris.tst.pruebatecnica.request.ActivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
+import com.neoris.tst.pruebatecnica.response.ActivarUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.InactivarUsuarioResponse;
 import org.springframework.stereotype.Service;
@@ -88,6 +90,34 @@ public class ClienteServiceImpl implements ClienteService{
         cliente = clienteRepository.save(cliente);
 
         return InactivarUsuarioResponse.builder()
+                .estado(persona.getEstado())
+                .identificacion(persona.getIdentificacion())
+                .nombre(persona.getNombre())
+                .build();
+    }
+
+    @Override
+    public ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest) throws PersonaException, ClienteException {
+        // Consultar persona
+        Persona persona = personaService.
+                buscarPersonaPorIdentificacion(activarUsuarioRequest.getIdentificacion());
+
+        Cliente cliente = clienteRepository.findByPersonaId(persona.getId()).orElseThrow(
+                () -> new ClienteException(
+                        String.format(CLIENTE_NO_EXISTE_POR_IDENTIFICACION_MENSAJE,
+                                activarUsuarioRequest.getIdentificacion()))
+        );
+
+        if(persona.getEstado() && cliente.getEstado()) {
+            throw new PersonaException(
+                    String.format(PERSONA_YA_ESTA_ACTIVA_MENSAJE, activarUsuarioRequest.getIdentificacion()));
+        }
+
+        persona = personaService.activarPersona(persona);
+        cliente.setEstado(true);
+        cliente = clienteRepository.save(cliente);
+
+        return ActivarUsuarioResponse.builder()
                 .estado(persona.getEstado())
                 .identificacion(persona.getIdentificacion())
                 .nombre(persona.getNombre())

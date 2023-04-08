@@ -23,4 +23,6 @@ public class MensajeExcepcionService {
             "La persona con identificación %s no existe en el sistema";
     public final static String PERSONA_YA_ESTA_INACTIVA_MENSAJE =
             "La persona con identificación %s ya está inactiva en el sistema";
+    public final static String PERSONA_YA_ESTA_ACTIVA_MENSAJE =
+            "La persona con identificación %s ya está activa en el sistema";
 }

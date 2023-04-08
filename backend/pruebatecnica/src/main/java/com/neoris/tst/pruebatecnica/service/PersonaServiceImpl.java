@@ -51,4 +51,10 @@ public class PersonaServiceImpl implements PersonaService{
         persona.setEstado(false);
         return personaRepository.save(persona);
     }
+
+    @Override
+    public Persona activarPersona(Persona persona) {
+        persona.setEstado(true);
+        return personaRepository.save(persona);
+    }
 }

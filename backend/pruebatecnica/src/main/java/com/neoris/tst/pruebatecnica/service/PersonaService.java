@@ -8,5 +8,6 @@ public interface PersonaService {
     Persona buscarPersonaPorNombreYEstado(String nombre, Boolean estado) throws PersonaException;
     Persona buscarPersonaPorIdentificacion(String identificacion) throws PersonaException;
     Persona inactivarPersona(Persona persona);
+    Persona activarPersona(Persona persona);
 
 }
