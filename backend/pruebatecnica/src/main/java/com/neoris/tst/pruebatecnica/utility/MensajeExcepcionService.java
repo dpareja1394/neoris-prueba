@@ -33,4 +33,6 @@ public class MensajeExcepcionService {
     public final static String CLIENTE_TIENE_CUENTAS_MENSAJE = "No se puede eliminar el cliente puesto que tiene cuentas asociadas";
 
     public final static String CLIENTE_ELIMINADO = "%s ha sido eliminado como cliente";
+
+    public final static String MOVIMIENTO_ERROR_CUENTA_INACTIVA = "No se puede realizar el movimiento puesto que la cuenta está inactiva";
 }

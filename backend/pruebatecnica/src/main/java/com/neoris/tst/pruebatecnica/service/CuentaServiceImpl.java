@@ -40,8 +40,8 @@ public class CuentaServiceImpl implements CuentaService {
         TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
                 (crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), true);
 
-        if (cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
-                (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId(), true)) {
+        if (cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaId
+                (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId())) {
             throw new CuentaException(
                     String.format(CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
                             tipoCuenta.getDescripcion().toLowerCase(),

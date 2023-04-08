@@ -8,8 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface CuentaRepository extends JpaRepository<Cuenta, Integer> {
-    boolean existsByNumeroCuentaAndClienteIdAndTipoCuentaIdAndEstado
-            (String numeroCuenta, Integer clienteId, Integer tipoCuentaId, Boolean estado);
+    boolean existsByNumeroCuentaAndClienteIdAndTipoCuentaId
+            (String numeroCuenta, Integer clienteId, Integer tipoCuentaId);
 
     Optional<Cuenta> findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado
             (String numeroCuenta, Integer tipoCuentaId, Boolean estado);
