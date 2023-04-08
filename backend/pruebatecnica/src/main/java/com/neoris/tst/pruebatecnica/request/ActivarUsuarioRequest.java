@@ -1,6 +1,6 @@
 package com.neoris.tst.pruebatecnica.request;
 
-import com.neoris.tst.pruebatecnica.utility.validations.ActivarUsuarioValidate;
+import com.neoris.tst.pruebatecnica.utility.validations.ActivarInactivarUsuarioValidate;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ActivarUsuarioRequest {
-    @NotNull(message = ActivarUsuarioValidate.IDENTIFICACION_NOT_NULL)
-    @NotEmpty(message = ActivarUsuarioValidate.IDENTIFICACION_NOT_EMPTY)
+    @NotNull(message = ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL)
+    @NotEmpty(message = ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_EMPTY)
     private String identificacion;
 }

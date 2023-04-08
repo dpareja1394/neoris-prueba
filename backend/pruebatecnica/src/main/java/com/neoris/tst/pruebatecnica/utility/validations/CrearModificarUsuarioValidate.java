@@ -1,6 +1,6 @@
 package com.neoris.tst.pruebatecnica.utility.validations;
 
-public class CrearUsuarioValidate {
+public class CrearModificarUsuarioValidate {
     public final static String NOMBRE_REQUIRED = "El campo nombres es obligatorio";
     public final static String NOMBRE_NOT_EMPTY = "El campo nombres no puede estar vacío";
     public final static String IDENTIFICACION_NOT_NULL = "La identificación del usuario es obligatoria";

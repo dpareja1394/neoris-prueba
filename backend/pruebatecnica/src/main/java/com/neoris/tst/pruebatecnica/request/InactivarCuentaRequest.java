@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InactivarUsuarioRequest {
-    @NotNull(message = ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL)
-    @NotEmpty(message = ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_EMPTY)
-    private String identificacion;
+public class InactivarCuentaRequest {
+
 }
