@@ -153,7 +153,8 @@ public class ClienteServiceImpl implements ClienteService {
         return BuscarUsuarioMapper.domainToResponse(buscarClientePorIdentificacion(identificacion));
     }
 
-    private Cliente buscarClientePorIdentificacion(String identificacion) throws PersonaException, ClienteException {
+    @Override
+    public Cliente buscarClientePorIdentificacion(String identificacion) throws PersonaException, ClienteException {
         Persona persona = personaService.buscarPersonaPorIdentificacion(identificacion);
         return buscarClientePorPersonaId(persona.getId());
     }

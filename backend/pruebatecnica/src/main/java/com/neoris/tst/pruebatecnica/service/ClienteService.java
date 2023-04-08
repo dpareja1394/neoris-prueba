@@ -1,7 +1,6 @@
 package com.neoris.tst.pruebatecnica.service;
 
 import com.neoris.tst.pruebatecnica.domain.Cliente;
-import com.neoris.tst.pruebatecnica.domain.Persona;
 import com.neoris.tst.pruebatecnica.exception.ClienteException;
 import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
@@ -37,5 +36,7 @@ public interface ClienteService {
     BuscarUsuarioResponse buscarUsuarioPorIdentificacion(String identificacion) throws PersonaException, ClienteException;
 
     String eliminarUsuario(String identificacion) throws PersonaException, ClienteException;
+
+    Cliente buscarClientePorIdentificacion(String identificacion) throws PersonaException, ClienteException;
 
 }

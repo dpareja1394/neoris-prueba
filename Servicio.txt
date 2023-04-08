@@ -11,8 +11,8 @@
 Inactivar cuenta de usuario
 Activar cuenta de usuario
 Eliminar cuenta
-Buscar cuenta por numero
-Buscar cuentas de un usuario
+*Buscar cuenta por numero y tipo
+*Buscar cuentas de un usuario
 
 
 *Ejecutar Movimiento(Post MovimientoController)

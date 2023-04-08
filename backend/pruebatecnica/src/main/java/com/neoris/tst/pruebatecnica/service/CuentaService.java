@@ -7,7 +7,10 @@ import com.neoris.tst.pruebatecnica.exception.CuentaException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
 import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
+import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
+
+import java.util.List;
 
 public interface CuentaService {
 
@@ -20,6 +23,10 @@ public interface CuentaService {
 
     Cuenta efectuarMovimientoEnCuenta(Cuenta cuenta);
 
-    Boolean existenCuentasPorCliente(Integer clienteId);
+    BuscarCuentaResponse consultarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
+            throws CuentaException, TipoCuentaException;
+
+    List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion)
+            throws CuentaException, TipoCuentaException, PersonaException, ClienteException;
 
 }

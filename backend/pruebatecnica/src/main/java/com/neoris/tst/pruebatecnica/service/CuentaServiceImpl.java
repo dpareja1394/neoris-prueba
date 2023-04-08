@@ -4,11 +4,15 @@ import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.TipoCuenta;
 import com.neoris.tst.pruebatecnica.exception.*;
+import com.neoris.tst.pruebatecnica.mapper.BuscarCuentaMapper;
 import com.neoris.tst.pruebatecnica.mapper.CrearCuentaUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.CuentaRepository;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
+import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE;
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE;
@@ -58,12 +62,12 @@ public class CuentaServiceImpl implements CuentaService {
     @Override
     public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws TipoCuentaException, CuentaException {
-
-        TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
-                (tipoCuentaDescripcion, true);
-
         return cuentaRepository
-                .findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado(numeroCuenta, tipoCuenta.getId(), true)
+                .findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado
+                        (numeroCuenta,
+                                tipoCuentaService.
+                                        buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true).getId(),
+                                true)
                 .orElseThrow(
                         () -> new CuentaException(
                                 String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE, tipoCuentaDescripcion, numeroCuenta, true)
@@ -77,7 +81,15 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public Boolean existenCuentasPorCliente(Integer clienteId) {
-        return cuentaRepository.existsByClienteId(clienteId);
+    public BuscarCuentaResponse consultarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
+            throws CuentaException, TipoCuentaException {
+        return BuscarCuentaMapper.domainToResponse(buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuentaDescripcion));
+    }
+
+    @Override
+    public List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion)
+            throws PersonaException, ClienteException {
+        return BuscarCuentaMapper.domainToResponseList(
+                clienteService.buscarClientePorIdentificacion(identificacion).getCuentas());
     }
 }
