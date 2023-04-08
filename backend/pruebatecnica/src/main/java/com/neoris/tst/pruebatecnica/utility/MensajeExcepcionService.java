@@ -25,4 +25,8 @@ public class MensajeExcepcionService {
             "La persona con identificación %s ya está inactiva en el sistema";
     public final static String PERSONA_YA_ESTA_ACTIVA_MENSAJE =
             "La persona con identificación %s ya está activa en el sistema";
+
+    public final static String GENERO_NO_ENCONTRADO_POR_ID_MENSAJE = "El género con id %s no se ha encontrado";
+
+    public final static String CLIENTE_NO_EXISTE_MENSAJE = "Cliente no existe";
 }

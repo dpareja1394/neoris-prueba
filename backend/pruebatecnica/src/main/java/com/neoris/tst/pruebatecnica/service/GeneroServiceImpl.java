@@ -6,6 +6,7 @@ import com.neoris.tst.pruebatecnica.repository.GeneroRepository;
 import org.springframework.stereotype.Service;
 
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.GENERO_NO_ENCONTRADO_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.GENERO_NO_ENCONTRADO_POR_ID_MENSAJE;
 
 @Service
 public class GeneroServiceImpl implements GeneroService{
@@ -18,10 +19,8 @@ public class GeneroServiceImpl implements GeneroService{
 
     @Override
     public Genero buscarGeneroPorAbreviatura(String abreviatura) throws GeneroException {
-        Genero genero = generoRepository.findGeneroByAbreviaturaAndEstado(abreviatura, true);
-        if(genero == null) {
-            throw new GeneroException(String.format(GENERO_NO_ENCONTRADO_MENSAJE, abreviatura));
-        }
-        return genero;
+        return generoRepository.findGeneroByAbreviaturaAndEstado(abreviatura, true).orElseThrow(
+                () -> new GeneroException(String.format(GENERO_NO_ENCONTRADO_MENSAJE, abreviatura))
+        );
     }
 }

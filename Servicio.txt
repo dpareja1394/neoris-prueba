@@ -1,9 +1,10 @@
 *Crear usuario (Post ClienteController)
 *Inactivar usuario
 *Activar usuario
-Modificar datos
-Buscar usuario por identificación
-Buscar todos
+*Modificar datos
+*Buscar usuario por identificación
+*Buscar todos
+Buscar todos por estado
 Eliminar usuario
 
 *Crear cuenta usuario (Post CuentaController)
