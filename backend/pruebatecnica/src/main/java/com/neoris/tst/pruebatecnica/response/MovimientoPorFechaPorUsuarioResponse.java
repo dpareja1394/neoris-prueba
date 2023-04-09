@@ -1,0 +1,18 @@
+package com.neoris.tst.pruebatecnica.response;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+public class MovimientoPorFechaPorUsuarioResponse {
+
+    private Date fecha;
+    private String cliente;
+    private String numeroCuenta;
+    private String tipoCuenta;
+    private BigDecimal saldoInicial;
+    private Boolean estado;
+    private BigDecimal movimiento;
+    private BigDecimal saldoDisponible;
+
+
+}

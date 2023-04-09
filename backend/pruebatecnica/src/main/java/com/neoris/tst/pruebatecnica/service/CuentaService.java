@@ -40,4 +40,6 @@ public interface CuentaService {
 
     String eliminarCuenta(String numeroCuenta, String tipoCuenta, boolean force) throws CuentaException, TipoCuentaException;
 
+    List<Cuenta> consultarListadoCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException;
+
 }

@@ -3,18 +3,18 @@ package com.neoris.tst.pruebatecnica.service;
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.Movimiento;
 import com.neoris.tst.pruebatecnica.domain.TipoMovimiento;
-import com.neoris.tst.pruebatecnica.exception.CuentaException;
-import com.neoris.tst.pruebatecnica.exception.MovimientoException;
-import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
-import com.neoris.tst.pruebatecnica.exception.TipoMovimientoException;
+import com.neoris.tst.pruebatecnica.exception.*;
 import com.neoris.tst.pruebatecnica.mapper.RealizarMovimientoMapper;
 import com.neoris.tst.pruebatecnica.repository.MovimientoRepository;
 import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
+import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
 import com.neoris.tst.pruebatecnica.utility.Constante;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
@@ -94,5 +94,18 @@ public class MovimientoServiceImpl implements MovimientoService{
         cuentaService.efectuarMovimientoEnCuenta(cuenta);
 
         return movimientoRepository.save(movimiento);
+    }
+
+    @Override
+    public List<MovimientoPorFechaPorUsuarioResponse> buscarMovimientosEnLasCuentasDeUnCliente
+            (String identificacion, LocalDateTime desde, LocalDateTime hasta) throws PersonaException, ClienteException {
+        List<Integer> idsCuentas = cuentaService.
+                consultarListadoCuentasPorUsuario(identificacion).
+                stream().map(Cuenta::getId).toList();
+
+        List<Movimiento> movimientos = movimientoRepository.findByCuentaIdInAndFechaBetween(idsCuentas, desde, hasta);
+        //Crear mapper para movimiento
+
+        return null;
     }
 }

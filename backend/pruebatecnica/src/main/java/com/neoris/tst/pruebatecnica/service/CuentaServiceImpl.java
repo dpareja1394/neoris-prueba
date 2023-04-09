@@ -161,4 +161,9 @@ public class CuentaServiceImpl implements CuentaService {
 
         return mensajeExito;
     }
+
+    @Override
+    public List<Cuenta> consultarListadoCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException {
+        return clienteService.buscarClientePorIdentificacion(identificacion).getCuentas();
+    }
 }
