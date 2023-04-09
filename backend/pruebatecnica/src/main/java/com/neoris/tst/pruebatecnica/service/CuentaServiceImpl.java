@@ -150,7 +150,7 @@ public class CuentaServiceImpl implements CuentaService {
                     cuenta.getNumeroCuenta()));
         }
 
-        cuenta.setEstado(false);
+        cuenta.setEstado(true);
         cuenta = cuentaRepository.save(cuenta);
 
         return ActivarCuentaResponse.builder()
