@@ -10,6 +10,7 @@ import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
 import com.neoris.tst.pruebatecnica.mapper.BuscarCuentaMapper;
 import com.neoris.tst.pruebatecnica.mapper.CrearCuentaUsuarioMapper;
 import com.neoris.tst.pruebatecnica.repository.CuentaRepository;
+import com.neoris.tst.pruebatecnica.repository.MovimientoRepository;
 import com.neoris.tst.pruebatecnica.request.ActivarCuentaRequest;
 import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.InactivarCuentaRequest;
@@ -17,6 +18,7 @@ import com.neoris.tst.pruebatecnica.response.ActivarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.InactivarCuentaResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,36 +26,38 @@ import java.util.List;
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
 @Service
+@Slf4j
 public class CuentaServiceImpl implements CuentaService {
 
     private final CuentaRepository cuentaRepository;
     private final TipoCuentaService tipoCuentaService;
     private final ClienteService clienteService;
 
-    public CuentaServiceImpl(CuentaRepository cuentaRepository, ClienteService clienteService, TipoCuentaService tipoCuentaService) {
+    private final MovimientoRepository movimientoRepository;
+
+    public CuentaServiceImpl(CuentaRepository cuentaRepository, ClienteService clienteService, TipoCuentaService tipoCuentaService, MovimientoRepository movimientoRepository) {
         this.cuentaRepository = cuentaRepository;
         this.tipoCuentaService = tipoCuentaService;
         this.clienteService = clienteService;
+        this.movimientoRepository = movimientoRepository;
     }
 
     @Override
     public CrearCuentaUsuarioResponse crearCuentaUsuario(CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
-            throws PersonaException,
-            TipoCuentaException, CuentaException, ClienteException {
-        Cliente cliente = clienteService.buscarClientePorNombreYEstado
-                (crearCuentaUsuarioRequest.getNombreCliente(), true);
+            throws PersonaException, TipoCuentaException, CuentaException, ClienteException {
+        Cliente cliente = clienteService.
+                buscarClientePorNombreYEstado(crearCuentaUsuarioRequest.getNombreCliente(), true);
 
-        TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado
-                (crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), true);
+        TipoCuenta tipoCuenta = tipoCuentaService.
+                buscarTipoCuentaPorDescripcionYEstado(crearCuentaUsuarioRequest.getTipoCuentaDescripcion(), true);
 
-        if (cuentaRepository.existsByNumeroCuentaAndClienteIdAndTipoCuentaId
-                (crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId())) {
+        if (cuentaRepository.
+                existsByNumeroCuentaAndClienteIdAndTipoCuentaId(
+                        crearCuentaUsuarioRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId())) {
             throw new CuentaException(
                     String.format(CUENTA_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
-                            tipoCuenta.getDescripcion().toLowerCase(),
-                            crearCuentaUsuarioRequest.getNumeroCuenta(),
-                            crearCuentaUsuarioRequest.getNombreCliente(),
-                            true));
+                            tipoCuenta.getDescripcion().toLowerCase(), crearCuentaUsuarioRequest.getNumeroCuenta(),
+                            crearCuentaUsuarioRequest.getNombreCliente(), true));
         }
 
         Cuenta cuenta = CrearCuentaUsuarioMapper.requestToCuenta(crearCuentaUsuarioRequest);
@@ -68,17 +72,11 @@ public class CuentaServiceImpl implements CuentaService {
     @Override
     public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws TipoCuentaException, CuentaException {
-        return cuentaRepository
-                .findCuentaByNumeroCuentaAndTipoCuentaId
-                        (numeroCuenta,
-                                tipoCuentaService.
-                                        buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true).getId())
-                .orElseThrow(
-                        () -> new CuentaException(
-                                String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE,
-                                        tipoCuentaDescripcion, numeroCuenta, true)
-                        )
-                );
+        return cuentaRepository.
+                findCuentaByNumeroCuentaAndTipoCuentaId(numeroCuenta,
+                        tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true).getId()).
+                orElseThrow(() -> new CuentaException(String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE,
+                        tipoCuentaDescripcion, numeroCuenta)));
     }
 
     @Override
@@ -93,37 +91,54 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion)
-            throws PersonaException, ClienteException {
-        return BuscarCuentaMapper.domainToResponseList(
-                clienteService.buscarClientePorIdentificacion(identificacion).getCuentas());
+    public List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException {
+        return BuscarCuentaMapper.domainToResponseList(clienteService.buscarClientePorIdentificacion(identificacion).getCuentas());
     }
 
     @Override
-    public InactivarCuentaResponse inactivarCuenta(InactivarCuentaRequest inactivarCuentaRequest)
-            throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
-        Cliente cliente = clienteService.buscarClientePorIdentificacion(inactivarCuentaRequest.getIdentificacion());
-        TipoCuenta tipoCuenta = tipoCuentaService.
-                buscarTipoCuentaPorDescripcionYEstado(inactivarCuentaRequest.getTipoCuentaDescripcion(), true);
-        Cuenta cuenta = cuentaRepository.findByNumeroCuentaAndClienteIdAndTipoCuentaId
-                (inactivarCuentaRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId()).orElseThrow(
-                () -> new CuentaException(
-                String.format(CUENTA_NO_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
-                        tipoCuenta.getDescripcion().toLowerCase(),
-                        inactivarCuentaRequest.getNumeroCuenta(),
-                        cliente.getPersona().getNombre(),
-                        true))
-        );
-        if(!cuenta.getEstado()) {
-            throw new CuentaException(String.format(CUENTA_YA_ESTA_INACTIVA, tipoCuenta.getDescripcion(),
-                    cuenta.getNumeroCuenta()));
+    public InactivarCuentaResponse inactivarCuenta(InactivarCuentaRequest inactivarCuentaRequest) throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
+        Cuenta cuenta = buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(inactivarCuentaRequest.getNumeroCuenta(),
+                inactivarCuentaRequest.getTipoCuentaDescripcion(), inactivarCuentaRequest.getIdentificacion());
+        if (!cuenta.getEstado()) {
+            throw new CuentaException(String.format(CUENTA_YA_ESTA_INACTIVA, cuenta.getTipoCuenta().getDescripcion(), cuenta.getNumeroCuenta()));
         }
 
         cuenta.setEstado(false);
         cuenta = cuentaRepository.save(cuenta);
 
         return InactivarCuentaResponse.builder()
-                .tipoCuentaDescripcion(tipoCuenta.getDescripcion())
+                .tipoCuentaDescripcion(cuenta.getTipoCuenta().getDescripcion())
+                .numeroCuenta(cuenta.getNumeroCuenta())
+                .estado(cuenta.getEstado())
+                .identificacion(cuenta.getCliente().getPersona().getIdentificacion())
+                .build();
+    }
+
+    public Cuenta buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(String numeroCuenta, String tipoCuentaDescripcion, String identificacionCliente)
+            throws PersonaException, ClienteException, TipoCuentaException, CuentaException {
+        Cliente cliente = clienteService.buscarClientePorIdentificacion(identificacionCliente);
+        TipoCuenta tipoCuenta = tipoCuentaService.buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true);
+        return cuentaRepository.
+                findByNumeroCuentaAndClienteIdAndTipoCuentaId(numeroCuenta, cliente.getId(), tipoCuenta.getId()).
+                orElseThrow(
+                        () -> new CuentaException(String.format(CUENTA_NO_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
+                                tipoCuenta.getDescripcion().toLowerCase(), numeroCuenta, cliente.getPersona().getNombre(), true)));
+    }
+
+    @Override
+    public ActivarCuentaResponse activarCuenta(ActivarCuentaRequest activarCuentaRequest) throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
+        Cuenta cuenta = buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(activarCuentaRequest.getNumeroCuenta(),
+                activarCuentaRequest.getTipoCuentaDescripcion(), activarCuentaRequest.getIdentificacion());
+        if (cuenta.getEstado()) {
+            throw new CuentaException(String.format(CUENTA_YA_ESTA_ACTIVA,
+                    cuenta.getTipoCuenta().getDescripcion(), cuenta.getNumeroCuenta()));
+        }
+
+        cuenta.setEstado(true);
+        cuenta = cuentaRepository.save(cuenta);
+
+        return ActivarCuentaResponse.builder()
+                .tipoCuentaDescripcion(cuenta.getTipoCuenta().getDescripcion())
                 .numeroCuenta(cuenta.getNumeroCuenta())
                 .estado(cuenta.getEstado())
                 .identificacion(cuenta.getCliente().getPersona().getIdentificacion())
@@ -131,32 +146,19 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
-    public ActivarCuentaResponse activarCuenta(ActivarCuentaRequest activarCuentaRequest) throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
-        Cliente cliente = clienteService.buscarClientePorIdentificacion(activarCuentaRequest.getIdentificacion());
-        TipoCuenta tipoCuenta = tipoCuentaService.
-                buscarTipoCuentaPorDescripcionYEstado(activarCuentaRequest.getTipoCuentaDescripcion(), true);
-        Cuenta cuenta = cuentaRepository.findByNumeroCuentaAndClienteIdAndTipoCuentaId
-                (activarCuentaRequest.getNumeroCuenta(), cliente.getId(), tipoCuenta.getId()).orElseThrow(
-                () -> new CuentaException(
-                        String.format(CUENTA_NO_EXISTE_POR_CLIENTE_TIPO_MENSAJE,
-                                tipoCuenta.getDescripcion().toLowerCase(),
-                                activarCuentaRequest.getNumeroCuenta(),
-                                cliente.getPersona().getNombre(),
-                                true))
-        );
-        if(cuenta.getEstado()) {
-            throw new CuentaException(String.format(CUENTA_YA_ESTA_ACTIVA, tipoCuenta.getDescripcion(),
-                    cuenta.getNumeroCuenta()));
+    public String eliminarCuenta(String numeroCuenta, String tipoCuenta, boolean force) throws CuentaException, TipoCuentaException {
+        Cuenta cuenta = buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuenta);
+        if (force) {
+            movimientoRepository.deleteAll(cuenta.getMovimientos());
+        } else {
+            if (!cuenta.getMovimientos().isEmpty()) {
+                throw new CuentaException(CUENTA_TIENE_MOVIMIENTOS_MENSAJE);
+            }
         }
+        String mensajeExito = String.format(CUENTA_ELIMINADA, cuenta.getTipoCuenta().getDescripcion(), cuenta.getNumeroCuenta());
 
-        cuenta.setEstado(true);
-        cuenta = cuentaRepository.save(cuenta);
+        cuentaRepository.delete(cuenta);
 
-        return ActivarCuentaResponse.builder()
-                .tipoCuentaDescripcion(tipoCuenta.getDescripcion())
-                .numeroCuenta(cuenta.getNumeroCuenta())
-                .estado(cuenta.getEstado())
-                .identificacion(cuenta.getCliente().getPersona().getIdentificacion())
-                .build();
+        return mensajeExito;
     }
 }

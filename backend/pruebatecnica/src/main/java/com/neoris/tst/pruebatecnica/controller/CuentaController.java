@@ -1,8 +1,17 @@
 package com.neoris.tst.pruebatecnica.controller;
 
-import com.neoris.tst.pruebatecnica.exception.*;
-import com.neoris.tst.pruebatecnica.request.*;
-import com.neoris.tst.pruebatecnica.response.*;
+import com.neoris.tst.pruebatecnica.exception.ClienteException;
+import com.neoris.tst.pruebatecnica.exception.CuentaException;
+import com.neoris.tst.pruebatecnica.exception.PersonaException;
+import com.neoris.tst.pruebatecnica.exception.TipoCuentaException;
+import com.neoris.tst.pruebatecnica.request.ActivarCuentaRequest;
+import com.neoris.tst.pruebatecnica.request.CrearCuentaUsuarioRequest;
+import com.neoris.tst.pruebatecnica.request.EliminarCuentaRequest;
+import com.neoris.tst.pruebatecnica.request.InactivarCuentaRequest;
+import com.neoris.tst.pruebatecnica.response.ActivarCuentaResponse;
+import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
+import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
+import com.neoris.tst.pruebatecnica.response.InactivarCuentaResponse;
 import com.neoris.tst.pruebatecnica.service.CuentaService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,6 +66,14 @@ public class CuentaController {
             @RequestBody @Valid ActivarCuentaRequest activarCuentaRequest)
             throws PersonaException, ClienteException, CuentaException, TipoCuentaException {
         return ResponseEntity.ok(cuentaService.activarCuenta(activarCuentaRequest));
+    }
+
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<String> eliminarCuenta(
+            @RequestBody @Valid EliminarCuentaRequest eliminarCuentaRequest)
+            throws CuentaException, TipoCuentaException {
+        return ResponseEntity.ok(cuentaService.eliminarCuenta(eliminarCuentaRequest.getNumeroCuenta(),
+                eliminarCuentaRequest.getTipoCuentaDescripcion(), eliminarCuentaRequest.isForce()));
     }
 
 }

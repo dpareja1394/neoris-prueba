@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -41,4 +42,7 @@ public class Cuenta {
 
     @Column(nullable = false)
     private Boolean estado;
+
+    @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
+    List<Movimiento> movimientos;
 }

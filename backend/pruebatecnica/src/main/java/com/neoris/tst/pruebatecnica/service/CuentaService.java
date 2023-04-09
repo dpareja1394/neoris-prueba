@@ -38,4 +38,6 @@ public interface CuentaService {
     ActivarCuentaResponse activarCuenta(ActivarCuentaRequest activarCuentaRequest)
             throws CuentaException, TipoCuentaException, PersonaException, ClienteException;
 
+    String eliminarCuenta(String numeroCuenta, String tipoCuenta, boolean force) throws CuentaException, TipoCuentaException;
+
 }
