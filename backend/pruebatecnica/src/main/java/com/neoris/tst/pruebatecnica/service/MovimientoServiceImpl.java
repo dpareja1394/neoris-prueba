@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.MOVIMIENTO_ERROR_CUENTA_INACTIVA;
-import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.RETIRO_EXCEDE_SALDO_CUENTA_MENSAJE;
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
 @Service
 public class MovimientoServiceImpl implements MovimientoService{
@@ -65,7 +64,12 @@ public class MovimientoServiceImpl implements MovimientoService{
     }
 
     private Movimiento efectuarRetiro
-            (RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento) throws MovimientoException {
+            (RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento)
+            throws MovimientoException {
+        if(BigDecimal.ZERO.compareTo(cuenta.getSaldoActual()) == 0) {
+            throw new MovimientoException(SALDO_NO_DISPONIBLE);
+        }
+
         //4. Si es retiro validar que el valor a retirar no sea mayor al saldo de la cuenta
         if (movimientoRequest.getValor().compareTo(cuenta.getSaldoActual()) > 0) {
             throw new MovimientoException(RETIRO_EXCEDE_SALDO_CUENTA_MENSAJE);

@@ -44,4 +44,6 @@ public class MensajeExcepcionService {
     public final static String CUENTA_TIENE_MOVIMIENTOS_MENSAJE = "No se puede eliminar la cuenta puesto que tiene movimientos realizados";
 
     public final static String CUENTA_ELIMINADA = "La cuenta de %s número %s ha sido eliminada correctamente";
+
+    public final static String SALDO_NO_DISPONIBLE = "Saldo no disponible";
 }
