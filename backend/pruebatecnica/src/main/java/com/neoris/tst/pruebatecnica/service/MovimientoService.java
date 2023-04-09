@@ -5,7 +5,7 @@ import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MovimientoService {
@@ -15,6 +15,6 @@ public interface MovimientoService {
             TipoMovimientoException, MovimientoException;
 
     List<MovimientoPorFechaPorUsuarioResponse> buscarMovimientosEnLasCuentasDeUnCliente
-            (String identificacion, LocalDateTime desde, LocalDateTime hasta) throws PersonaException, ClienteException;
+            (String identificacion, LocalDate desde, LocalDate hasta) throws PersonaException, ClienteException;
 
 }

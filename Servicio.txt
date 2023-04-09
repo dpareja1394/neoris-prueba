@@ -16,5 +16,5 @@
 
 
 *Ejecutar Movimiento(Post MovimientoController)
-Listar movimientos por fechas y usuario
+*Listar movimientos por fechas y usuario
 Listar movimientos por fechas y número de cuenta

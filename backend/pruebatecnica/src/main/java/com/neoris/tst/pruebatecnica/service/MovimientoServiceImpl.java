@@ -4,16 +4,18 @@ import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.Movimiento;
 import com.neoris.tst.pruebatecnica.domain.TipoMovimiento;
 import com.neoris.tst.pruebatecnica.exception.*;
+import com.neoris.tst.pruebatecnica.mapper.MovimientoPorFechaPorUsuarioMapper;
 import com.neoris.tst.pruebatecnica.mapper.RealizarMovimientoMapper;
 import com.neoris.tst.pruebatecnica.repository.MovimientoRepository;
 import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
 import com.neoris.tst.pruebatecnica.utility.Constante;
+import com.neoris.tst.pruebatecnica.utility.FechaUtil;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
@@ -98,14 +100,13 @@ public class MovimientoServiceImpl implements MovimientoService{
 
     @Override
     public List<MovimientoPorFechaPorUsuarioResponse> buscarMovimientosEnLasCuentasDeUnCliente
-            (String identificacion, LocalDateTime desde, LocalDateTime hasta) throws PersonaException, ClienteException {
+            (String identificacion, LocalDate desde, LocalDate hasta) throws PersonaException, ClienteException {
         List<Integer> idsCuentas = cuentaService.
                 consultarListadoCuentasPorUsuario(identificacion).
                 stream().map(Cuenta::getId).toList();
 
-        List<Movimiento> movimientos = movimientoRepository.findByCuentaIdInAndFechaBetween(idsCuentas, desde, hasta);
-        //Crear mapper para movimiento
-
-        return null;
+        List<Movimiento> movimientos = movimientoRepository.
+                findByCuentaIdInAndFechaBetweenOrderByFechaAsc(idsCuentas, FechaUtil.fecha(desde), FechaUtil.fecha(hasta));
+        return MovimientoPorFechaPorUsuarioMapper.domainToResponseList(movimientos);
     }
 }
