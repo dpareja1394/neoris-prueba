@@ -69,11 +69,10 @@ public class CuentaServiceImpl implements CuentaService {
     public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws TipoCuentaException, CuentaException {
         return cuentaRepository
-                .findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado
+                .findCuentaByNumeroCuentaAndTipoCuentaId
                         (numeroCuenta,
                                 tipoCuentaService.
-                                        buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true).getId(),
-                                true)
+                                        buscarTipoCuentaPorDescripcionYEstado(tipoCuentaDescripcion, true).getId())
                 .orElseThrow(
                         () -> new CuentaException(
                                 String.format(CUENTA_NO_EXISTE_POR_NUMERO_TIPO_MENSAJE,

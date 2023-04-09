@@ -11,9 +11,9 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Integer> {
     boolean existsByNumeroCuentaAndClienteIdAndTipoCuentaId
             (String numeroCuenta, Integer clienteId, Integer tipoCuentaId);
 
-    Optional<Cuenta> findCuentaByNumeroCuentaAndTipoCuentaIdAndEstado
-            (String numeroCuenta, Integer tipoCuentaId, Boolean estado);
-
     Optional<Cuenta> findByNumeroCuentaAndClienteIdAndTipoCuentaId
             (String numeroCuenta, Integer clienteId, Integer tipoCuentaId);
+
+    Optional<Cuenta> findCuentaByNumeroCuentaAndTipoCuentaId
+            (String numeroCuenta, Integer tipoCuentaId);
 }
