@@ -3,10 +3,9 @@ package com.neoris.tst.pruebatecnica.controller;
 import com.neoris.tst.pruebatecnica.exception.ClienteException;
 import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.exception.PersonaException;
-import com.neoris.tst.pruebatecnica.response.ActivarUsuarioResponse;
-import com.neoris.tst.pruebatecnica.response.CrearUsuarioResponse;
-import com.neoris.tst.pruebatecnica.response.InactivarUsuarioResponse;
-import com.neoris.tst.pruebatecnica.response.ModificarUsuarioResponse;
+import com.neoris.tst.pruebatecnica.repository.ClienteRepository;
+import com.neoris.tst.pruebatecnica.repository.PersonaRepository;
+import com.neoris.tst.pruebatecnica.response.*;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
 import com.neoris.tst.pruebatecnica.service.PersonaService;
 import com.neoris.tst.pruebatecnica.utility.RequestConstante;
@@ -19,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +38,12 @@ class ClienteControllerTest {
 
     @MockBean
     private PersonaService personaService;
+
+    @MockBean
+    private ClienteRepository clienteRepository;
+
+    @MockBean
+    private PersonaRepository personaRepository;
 
     @Test
     void crearUsuario() throws GeneroException, PersonaException {
@@ -121,5 +128,40 @@ class ClienteControllerTest {
         } catch (Exception e) {
             assertEquals(ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
         }
+    }
+
+    @Test
+    void buscarUsuario() throws PersonaException, ClienteException {
+
+        when(clienteService.buscarUsuarioPorIdentificacion(any())).thenReturn(ResponseConstante.BUSCAR_USUARIO);
+
+        ResponseEntity<BuscarUsuarioResponse> response =
+                clienteController.buscarUsuario("1111");
+
+        assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
+        assertEquals(response.getBody().getNombres(), ResponseConstante.PERSONA.getNombre());
+        assertTrue(response.getBody().getEstado());
+    }
+
+    @Test
+    void buscarUsuario_ExcepcionEsperada() {
+        try {
+            clienteController.buscarUsuario(null);
+        } catch (Exception e) {
+            assertEquals(ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
+        }
+    }
+
+    @Test
+    void buscarUsuarios() {
+
+        when(clienteService.buscarTodosLosClientes()).thenReturn(ResponseConstante.BUSCAR_USUARIOS);
+
+        ResponseEntity<List<BuscarUsuarioResponse>> response =
+                clienteController.buscarUsuarios();
+
+        assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
+        assertEquals(response.getBody().size(), 2);
+        assertTrue(response.getBody().get(1).getEstado());
     }
 }
