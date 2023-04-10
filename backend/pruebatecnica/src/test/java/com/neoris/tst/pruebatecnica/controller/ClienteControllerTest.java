@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.CLIENTE_ELIMINADO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -163,5 +164,40 @@ class ClienteControllerTest {
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
         assertEquals(response.getBody().size(), 2);
         assertTrue(response.getBody().get(1).getEstado());
+    }
+
+    @Test
+    void buscarUsuariosPorEstado() {
+
+        when(clienteService.buscarTodosLosClientesPorEstado(Boolean.TRUE)).thenReturn(ResponseConstante.BUSCAR_USUARIOS);
+
+        ResponseEntity<List<BuscarUsuarioResponse>> response =
+                clienteController.buscarTodosLosClientesPorEstado(Boolean.TRUE);
+
+        assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
+        assertEquals(response.getBody().size(), 2);
+        assertTrue(response.getBody().get(1).getEstado());
+    }
+
+    @Test
+    void eliminarUsuario() throws PersonaException, ClienteException {
+
+        when(clienteService.eliminarUsuario(any())).thenReturn(String.format(CLIENTE_ELIMINADO, ResponseConstante.PERSONA.getNombre()));
+
+        ResponseEntity<String> response =
+                clienteController.eliminarUsuario("11111");
+
+        assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
+        assertEquals(response.getBody(),
+                String.format(CLIENTE_ELIMINADO, ResponseConstante.PERSONA.getNombre()));
+    }
+
+    @Test
+    void eliminarUsuario_ExcepcionEsperada() {
+        try {
+            clienteController.eliminarUsuario(null);
+        } catch (Exception e) {
+            assertEquals(ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
+        }
     }
 }
