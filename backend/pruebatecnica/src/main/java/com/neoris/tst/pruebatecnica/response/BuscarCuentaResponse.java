@@ -1,15 +1,16 @@
 package com.neoris.tst.pruebatecnica.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @Builder
+@ToString
 public class BuscarCuentaResponse {
     private String numeroCuenta;
     private String cliente;

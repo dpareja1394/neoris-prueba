@@ -62,7 +62,7 @@ public class CuentaController {
     }
 
     @PutMapping("/activar")
-    public ResponseEntity<ActivarCuentaResponse> activarUsuario(
+    public ResponseEntity<ActivarCuentaResponse> activarCuenta(
             @RequestBody @Valid ActivarCuentaRequest activarCuentaRequest)
             throws PersonaException, ClienteException, CuentaException, TipoCuentaException {
         return ResponseEntity.ok(cuentaService.activarCuenta(activarCuentaRequest));
