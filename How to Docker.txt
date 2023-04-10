@@ -1,0 +1,47 @@
+Docker
+
+Abrir una terminal de comandos e ir hasta la ruta del proyecto SpringBoot
+cd neoris-prueba/backend/pruebatecnica
+
+Validar que el proyecto compile correctamente con maven, importante tener la base de datos ejecutando correctamente
+mvn clean spring-boot:run
+
+Generar el Jar del proyecto, queda en la carpeta neoris-prueba/backend/pruebatecnica/target.
+El comando mvn install va a ejecutar las pruebas unitarias y va a generar el jar.
+mvn install
+
+Validar que se haya generado correctamente el jar en la carpeta target
+ls target/
+
+Debe aparecer el archivo 
+pruebatecnica-1.0.0.jar
+
+Copiar el jar en la ruta donde se encuentra el Dockerfile
+cp target/pruebatecnica-1.0.0.jar src/main/docker
+
+Validar que se haya copiado el jar correctamente
+ls src/main/docker
+
+Deben aparecer 2 archivos
+Dockerfile y pruebatecnica-1.0.0.jar
+
+Construir la imagen de Docker
+docker build -t pruebatecnica src/main/docker
+
+Validar que se haya creado la imagen de Docker
+docker images
+
+Debe aparecer la imagen creada recientemente 
+REPOSITORY         TAG       IMAGE ID       CREATED          SIZE
+pruebatecnica      latest    {image_id}   23 seconds ago   516MB
+
+Ejecutar la imagen de docker
+docker run -d -p 8080:8080 --name neorispruebacontainer pruebatecnica
+
+Debe aparecer un id del contenedor ejecutándose
+
+Validar ejecución
+docker ps
+
+CONTAINER ID   IMAGE           COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+5823945b289b   pruebatecnica   "java -jar /app.jar"     28 seconds ago   Up 27 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   neorispruebacontainer

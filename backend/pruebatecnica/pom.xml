@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.neoris.tst</groupId>
 	<artifactId>pruebatecnica</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>pruebatecnica</name>
 	<description>Prueba técnica Arquitectura Microservicios</description>
 	<properties>
