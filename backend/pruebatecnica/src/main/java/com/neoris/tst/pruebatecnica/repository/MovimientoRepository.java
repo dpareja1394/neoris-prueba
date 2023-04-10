@@ -12,4 +12,6 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Integer>
 
     List<Movimiento> findByCuentaIdInAndFechaBetweenOrderByFechaAsc(List<Integer> cuentasIds, Timestamp desde, Timestamp hasta);
 
+    List<Movimiento> findByCuentaIdAndFechaBetweenOrderByFechaAsc(Integer cuentaId, Timestamp desde, Timestamp hasta);
+
 }

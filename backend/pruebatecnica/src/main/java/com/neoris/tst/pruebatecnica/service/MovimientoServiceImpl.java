@@ -4,10 +4,11 @@ import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.Movimiento;
 import com.neoris.tst.pruebatecnica.domain.TipoMovimiento;
 import com.neoris.tst.pruebatecnica.exception.*;
-import com.neoris.tst.pruebatecnica.mapper.MovimientoPorFechaPorUsuarioMapper;
+import com.neoris.tst.pruebatecnica.mapper.ReportesMapperMapper;
 import com.neoris.tst.pruebatecnica.mapper.RealizarMovimientoMapper;
 import com.neoris.tst.pruebatecnica.repository.MovimientoRepository;
 import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
+import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
 import com.neoris.tst.pruebatecnica.utility.Constante;
@@ -107,6 +108,17 @@ public class MovimientoServiceImpl implements MovimientoService{
 
         List<Movimiento> movimientos = movimientoRepository.
                 findByCuentaIdInAndFechaBetweenOrderByFechaAsc(idsCuentas, FechaUtil.fecha(desde), FechaUtil.fecha(hasta));
-        return MovimientoPorFechaPorUsuarioMapper.domainToResponseList(movimientos);
+        return ReportesMapperMapper.domainToMovimientoPorFechaPorUsuarioResponseList(movimientos);
+    }
+
+    @Override
+    public List<MovimientoPorFechaPorCuentaResponse> buscarMovimientosEnCuenta(String numeroCuenta, String tipoCuentaDescripcion,
+                                                                               LocalDate desde, LocalDate hasta)
+            throws CuentaException, TipoCuentaException {
+        Cuenta cuenta = cuentaService.buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuentaDescripcion);
+
+        List<Movimiento> movimientos = movimientoRepository.
+                findByCuentaIdAndFechaBetweenOrderByFechaAsc(cuenta.getId(), FechaUtil.fecha(desde), FechaUtil.fecha(hasta));
+        return ReportesMapperMapper.domainToMovimientoPorFechaPorCuentaResponseList(movimientos);
     }
 }
