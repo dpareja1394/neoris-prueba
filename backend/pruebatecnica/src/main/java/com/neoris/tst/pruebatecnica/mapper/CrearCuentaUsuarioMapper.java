@@ -11,8 +11,8 @@ public class CrearCuentaUsuarioMapper {
         return Cuenta.builder()
                 .numeroCuenta(cuentaUsuarioRequest.getNumeroCuenta())
                 .estado(true)
-                .saldoInicial(cuentaUsuarioRequest.getSadoInicial())
-                .saldoActual(cuentaUsuarioRequest.getSadoInicial())
+                .saldoInicial(cuentaUsuarioRequest.getSaldoInicial())
+                .saldoActual(cuentaUsuarioRequest.getSaldoInicial())
                 .build();
     }
 
@@ -21,7 +21,7 @@ public class CrearCuentaUsuarioMapper {
         return CrearCuentaUsuarioResponse.builder()
                 .numeroCuenta(cuenta.getNumeroCuenta())
                 .tipoCuentaDescripcion(tipoCuenta.getDescripcion())
-                .sadoInicial(cuenta.getSaldoInicial())
+                .saldoInicial(cuenta.getSaldoInicial())
                 .estado(cuenta.getEstado())
                 .nombreCliente(nombreCliente)
                 .build();

@@ -17,7 +17,7 @@ public class CrearCuentaUsuarioResponse {
     @JsonProperty("tipo")
     private String tipoCuentaDescripcion;
 
-    private BigDecimal sadoInicial;
+    private BigDecimal saldoInicial;
 
     private Boolean estado;
 

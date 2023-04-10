@@ -8,8 +8,8 @@ import com.neoris.tst.pruebatecnica.repository.PersonaRepository;
 import com.neoris.tst.pruebatecnica.response.*;
 import com.neoris.tst.pruebatecnica.service.ClienteService;
 import com.neoris.tst.pruebatecnica.service.PersonaService;
-import com.neoris.tst.pruebatecnica.utility.RequestConstante;
-import com.neoris.tst.pruebatecnica.utility.ResponseConstante;
+import com.neoris.tst.pruebatecnica.utility.ClienteRequestConstante;
+import com.neoris.tst.pruebatecnica.utility.ClienteResponseConstante;
 import com.neoris.tst.pruebatecnica.utility.validations.ActivarInactivarUsuarioValidate;
 import com.neoris.tst.pruebatecnica.utility.validations.CrearModificarUsuarioValidate;
 import org.junit.jupiter.api.Test;
@@ -48,16 +48,16 @@ class ClienteControllerTest {
 
     @Test
     void crearUsuario() throws GeneroException, PersonaException {
-        when(clienteService.crearUsuario(any())).thenReturn(ResponseConstante.CREAR_USUARIO_RESPONSE_OK);
-        ResponseEntity<CrearUsuarioResponse> response = clienteController.crearUsuario(RequestConstante.CREAR_USUARIO_REQUEST_OK);
-        verify(clienteService).crearUsuario(eq(RequestConstante.CREAR_USUARIO_REQUEST_OK));
+        when(clienteService.crearUsuario(any())).thenReturn(ClienteResponseConstante.CREAR_USUARIO_RESPONSE_OK);
+        ResponseEntity<CrearUsuarioResponse> response = clienteController.crearUsuario(ClienteRequestConstante.CREAR_USUARIO_REQUEST_OK);
+        verify(clienteService).crearUsuario(eq(ClienteRequestConstante.CREAR_USUARIO_REQUEST_OK));
         assertTrue(response.getStatusCode().value() == HttpStatus.CREATED.value());
     }
 
     @Test
     public void crearUsuario_datosInvalidos_excepcionEsperada() {
         try {
-            clienteController.crearUsuario(RequestConstante.CREAR_USUARIO_NOMBRE_NULL);
+            clienteController.crearUsuario(ClienteRequestConstante.CREAR_USUARIO_NOMBRE_NULL);
         } catch (Exception e) {
             assertEquals(CrearModificarUsuarioValidate.NOMBRE_REQUIRED, e.getMessage());
         }
@@ -65,21 +65,21 @@ class ClienteControllerTest {
 
     @Test
     void modificarUsuario() throws GeneroException, PersonaException, ClienteException {
-        when(clienteService.modificarUsuario(any())).thenReturn(ResponseConstante.MODIFICAR_USUARIO_RESPONSE_OK);
+        when(clienteService.modificarUsuario(any())).thenReturn(ClienteResponseConstante.MODIFICAR_USUARIO_RESPONSE_OK);
 
         ResponseEntity<ModificarUsuarioResponse> response =
-                clienteController.modificarUsuario(RequestConstante.MODIFICAR_USUARIO_REQUEST_OK);
+                clienteController.modificarUsuario(ClienteRequestConstante.MODIFICAR_USUARIO_REQUEST_OK);
 
-        verify(clienteService).modificarUsuario(eq(RequestConstante.MODIFICAR_USUARIO_REQUEST_OK));
+        verify(clienteService).modificarUsuario(eq(ClienteRequestConstante.MODIFICAR_USUARIO_REQUEST_OK));
 
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
-        assertEquals(response.getBody().getNombres(), ResponseConstante.MODIFICAR_USUARIO_RESPONSE_OK.getNombres());
+        assertEquals(response.getBody().getNombres(), ClienteResponseConstante.MODIFICAR_USUARIO_RESPONSE_OK.getNombres());
     }
 
     @Test
     public void modificarUsuario_datosInvalidos_excepcionEsperada() {
         try {
-            clienteController.modificarUsuario(RequestConstante.MODIFICAR_USUARIO_IDENTIFICACION_NULL);
+            clienteController.modificarUsuario(ClienteRequestConstante.MODIFICAR_USUARIO_IDENTIFICACION_NULL);
         } catch (Exception e) {
             assertEquals(CrearModificarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
         }
@@ -87,22 +87,22 @@ class ClienteControllerTest {
 
     @Test
     void inactivarUsuario() throws PersonaException, ClienteException {
-        when(clienteService.inactivarUsuario(any())).thenReturn(ResponseConstante.INACTIVAR_USUARIO_RESPONSE_OK);
+        when(clienteService.inactivarUsuario(any())).thenReturn(ClienteResponseConstante.INACTIVAR_USUARIO_RESPONSE_OK);
 
         ResponseEntity<InactivarUsuarioResponse> response =
-                clienteController.inactivarUsuario(RequestConstante.INACTIVAR_USUARIO_REQUEST_OK);
+                clienteController.inactivarUsuario(ClienteRequestConstante.INACTIVAR_USUARIO_REQUEST_OK);
 
-        verify(clienteService).inactivarUsuario(eq(RequestConstante.INACTIVAR_USUARIO_REQUEST_OK));
+        verify(clienteService).inactivarUsuario(eq(ClienteRequestConstante.INACTIVAR_USUARIO_REQUEST_OK));
 
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
-        assertEquals(response.getBody().getNombre(), ResponseConstante.INACTIVAR_USUARIO_RESPONSE_OK.getNombre());
+        assertEquals(response.getBody().getNombre(), ClienteResponseConstante.INACTIVAR_USUARIO_RESPONSE_OK.getNombre());
         assertFalse(response.getBody().getEstado());
     }
 
     @Test
     public void inactivarUsuario_datosInvalidos_excepcionEsperada() {
         try {
-            clienteController.inactivarUsuario(RequestConstante.INACTIVAR_USUARIO_REQUEST_IDENTIFICACION_NULL);
+            clienteController.inactivarUsuario(ClienteRequestConstante.INACTIVAR_USUARIO_REQUEST_IDENTIFICACION_NULL);
         } catch (Exception e) {
             assertEquals(ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
         }
@@ -110,22 +110,22 @@ class ClienteControllerTest {
 
     @Test
     void activarUsuario() throws PersonaException, ClienteException {
-        when(clienteService.activarUsuario(any())).thenReturn(ResponseConstante.ACTIVAR_USUARIO_RESPONSE_OK);
+        when(clienteService.activarUsuario(any())).thenReturn(ClienteResponseConstante.ACTIVAR_USUARIO_RESPONSE_OK);
 
         ResponseEntity<ActivarUsuarioResponse> response =
-                clienteController.activarUsuario(RequestConstante.ACTIVAR_USUARIO_REQUEST_OK);
+                clienteController.activarUsuario(ClienteRequestConstante.ACTIVAR_USUARIO_REQUEST_OK);
 
-        verify(clienteService).activarUsuario(eq(RequestConstante.ACTIVAR_USUARIO_REQUEST_OK));
+        verify(clienteService).activarUsuario(eq(ClienteRequestConstante.ACTIVAR_USUARIO_REQUEST_OK));
 
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
-        assertEquals(response.getBody().getNombre(), ResponseConstante.ACTIVAR_USUARIO_RESPONSE_OK.getNombre());
+        assertEquals(response.getBody().getNombre(), ClienteResponseConstante.ACTIVAR_USUARIO_RESPONSE_OK.getNombre());
         assertTrue(response.getBody().getEstado());
     }
 
     @Test
     public void activarUsuario_datosInvalidos_excepcionEsperada() {
         try {
-            clienteController.activarUsuario(RequestConstante.ACTIVAR_USUARIO_REQUEST_IDENTIFICACION_NULL);
+            clienteController.activarUsuario(ClienteRequestConstante.ACTIVAR_USUARIO_REQUEST_IDENTIFICACION_NULL);
         } catch (Exception e) {
             assertEquals(ActivarInactivarUsuarioValidate.IDENTIFICACION_NOT_NULL, e.getMessage());
         }
@@ -134,13 +134,13 @@ class ClienteControllerTest {
     @Test
     void buscarUsuario() throws PersonaException, ClienteException {
 
-        when(clienteService.buscarUsuarioPorIdentificacion(any())).thenReturn(ResponseConstante.BUSCAR_USUARIO);
+        when(clienteService.buscarUsuarioPorIdentificacion(any())).thenReturn(ClienteResponseConstante.BUSCAR_USUARIO);
 
         ResponseEntity<BuscarUsuarioResponse> response =
                 clienteController.buscarUsuario("1111");
 
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
-        assertEquals(response.getBody().getNombres(), ResponseConstante.PERSONA.getNombre());
+        assertEquals(response.getBody().getNombres(), ClienteResponseConstante.PERSONA.getNombre());
         assertTrue(response.getBody().getEstado());
     }
 
@@ -156,7 +156,7 @@ class ClienteControllerTest {
     @Test
     void buscarUsuarios() {
 
-        when(clienteService.buscarTodosLosClientes()).thenReturn(ResponseConstante.BUSCAR_USUARIOS);
+        when(clienteService.buscarTodosLosClientes()).thenReturn(ClienteResponseConstante.BUSCAR_USUARIOS);
 
         ResponseEntity<List<BuscarUsuarioResponse>> response =
                 clienteController.buscarUsuarios();
@@ -169,7 +169,7 @@ class ClienteControllerTest {
     @Test
     void buscarUsuariosPorEstado() {
 
-        when(clienteService.buscarTodosLosClientesPorEstado(Boolean.TRUE)).thenReturn(ResponseConstante.BUSCAR_USUARIOS);
+        when(clienteService.buscarTodosLosClientesPorEstado(Boolean.TRUE)).thenReturn(ClienteResponseConstante.BUSCAR_USUARIOS);
 
         ResponseEntity<List<BuscarUsuarioResponse>> response =
                 clienteController.buscarTodosLosClientesPorEstado(Boolean.TRUE);
@@ -182,14 +182,14 @@ class ClienteControllerTest {
     @Test
     void eliminarUsuario() throws PersonaException, ClienteException {
 
-        when(clienteService.eliminarUsuario(any())).thenReturn(String.format(CLIENTE_ELIMINADO, ResponseConstante.PERSONA.getNombre()));
+        when(clienteService.eliminarUsuario(any())).thenReturn(String.format(CLIENTE_ELIMINADO, ClienteResponseConstante.PERSONA.getNombre()));
 
         ResponseEntity<String> response =
                 clienteController.eliminarUsuario("11111");
 
         assertTrue(response.getStatusCode().value() == HttpStatus.OK.value());
         assertEquals(response.getBody(),
-                String.format(CLIENTE_ELIMINADO, ResponseConstante.PERSONA.getNombre()));
+                String.format(CLIENTE_ELIMINADO, ClienteResponseConstante.PERSONA.getNombre()));
     }
 
     @Test

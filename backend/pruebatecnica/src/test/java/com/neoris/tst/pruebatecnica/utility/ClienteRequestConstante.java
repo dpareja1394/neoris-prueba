@@ -5,7 +5,7 @@ import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.ModificarUsuarioRequest;
 
-public class RequestConstante {
+public class ClienteRequestConstante {
 
     public static CrearUsuarioRequest CREAR_USUARIO_REQUEST_OK = CrearUsuarioRequest.builder()
             .nombres("Jose Lema")

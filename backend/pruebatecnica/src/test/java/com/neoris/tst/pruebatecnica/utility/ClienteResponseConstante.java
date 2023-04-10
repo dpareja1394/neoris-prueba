@@ -8,7 +8,7 @@ import com.neoris.tst.pruebatecnica.response.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class ResponseConstante {
+public class ClienteResponseConstante {
 
     public static CrearUsuarioResponse CREAR_USUARIO_RESPONSE_OK = CrearUsuarioResponse.builder()
             .nombres("Jose Lema")
@@ -66,13 +66,13 @@ public class ResponseConstante {
             .build();
 
     public static BuscarUsuarioResponse BUSCAR_USUARIO = BuscarUsuarioResponse.builder()
-            .identificacion(ResponseConstante.PERSONA.getIdentificacion())
-            .nombres(ResponseConstante.PERSONA.getNombre())
-            .direccion(ResponseConstante.PERSONA.getDireccion())
-            .telefono(ResponseConstante.PERSONA.getTelefono())
-            .contrasena(ResponseConstante.CLIENTE.getContrasena())
-            .generoDescripcion(ResponseConstante.PERSONA.getGenero().getDescripcion())
-            .estado(ResponseConstante.PERSONA.getEstado())
+            .identificacion(ClienteResponseConstante.PERSONA.getIdentificacion())
+            .nombres(ClienteResponseConstante.PERSONA.getNombre())
+            .direccion(ClienteResponseConstante.PERSONA.getDireccion())
+            .telefono(ClienteResponseConstante.PERSONA.getTelefono())
+            .contrasena(ClienteResponseConstante.CLIENTE.getContrasena())
+            .generoDescripcion(ClienteResponseConstante.PERSONA.getGenero().getDescripcion())
+            .estado(ClienteResponseConstante.PERSONA.getEstado())
             .build();
 
     public static List<BuscarUsuarioResponse> BUSCAR_USUARIOS =
