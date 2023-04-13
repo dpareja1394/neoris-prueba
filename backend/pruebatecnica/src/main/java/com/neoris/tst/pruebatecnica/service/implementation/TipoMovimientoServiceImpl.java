@@ -1,12 +1,14 @@
-package com.neoris.tst.pruebatecnica.service;
+package com.neoris.tst.pruebatecnica.service.implementation;
 
 import com.neoris.tst.pruebatecnica.domain.TipoMovimiento;
 import com.neoris.tst.pruebatecnica.exception.TipoMovimientoException;
 import com.neoris.tst.pruebatecnica.repository.TipoMovimientoRepository;
+import com.neoris.tst.pruebatecnica.service.TipoMovimientoService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class TipoMovimientoServiceImpl implements TipoMovimientoService{
+public class TipoMovimientoServiceImpl implements TipoMovimientoService {
     private final TipoMovimientoRepository tipoMovimientoRepository;
 
     public final static String TIPO_MOVIMIENTO_NO_EXISTE_POR_DESCRIPCION_MENSAJE =
@@ -18,6 +20,7 @@ public class TipoMovimientoServiceImpl implements TipoMovimientoService{
 
 
     @Override
+    @Transactional(readOnly = true)
     public TipoMovimiento buscarPorDescripcionYEstado(String descripcion, Boolean estado) throws TipoMovimientoException {
         return tipoMovimientoRepository.findByDescripcionAndEstado(descripcion, estado).orElseThrow(
                 () ->new TipoMovimientoException(

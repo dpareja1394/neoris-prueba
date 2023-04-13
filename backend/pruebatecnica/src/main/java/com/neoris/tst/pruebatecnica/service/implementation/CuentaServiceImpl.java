@@ -1,4 +1,4 @@
-package com.neoris.tst.pruebatecnica.service;
+package com.neoris.tst.pruebatecnica.service.implementation;
 
 import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
@@ -18,8 +18,13 @@ import com.neoris.tst.pruebatecnica.response.ActivarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.CrearCuentaUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.InactivarCuentaResponse;
+import com.neoris.tst.pruebatecnica.service.ClienteService;
+import com.neoris.tst.pruebatecnica.service.CuentaService;
+import com.neoris.tst.pruebatecnica.service.TipoCuentaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,6 +48,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public CrearCuentaUsuarioResponse crearCuentaUsuario(CrearCuentaUsuarioRequest crearCuentaUsuarioRequest)
             throws PersonaException, TipoCuentaException, CuentaException, ClienteException {
         Cliente cliente = clienteService.
@@ -70,6 +76,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cuenta buscarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws TipoCuentaException, CuentaException {
         return cuentaRepository.
@@ -80,22 +87,26 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Cuenta efectuarMovimientoEnCuenta(Cuenta cuenta) {
         return cuentaRepository.save(cuenta);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BuscarCuentaResponse consultarCuentaPorNumeroYTipoCuenta(String numeroCuenta, String tipoCuentaDescripcion)
             throws CuentaException, TipoCuentaException {
         return BuscarCuentaMapper.domainToResponse(buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuentaDescripcion));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BuscarCuentaResponse> consultarCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException {
         return BuscarCuentaMapper.domainToResponseList(clienteService.buscarClientePorIdentificacion(identificacion).getCuentas());
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InactivarCuentaResponse inactivarCuenta(InactivarCuentaRequest inactivarCuentaRequest) throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
         Cuenta cuenta = buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(inactivarCuentaRequest.getNumeroCuenta(),
                 inactivarCuentaRequest.getTipoCuentaDescripcion(), inactivarCuentaRequest.getIdentificacion());
@@ -114,6 +125,7 @@ public class CuentaServiceImpl implements CuentaService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public Cuenta buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(String numeroCuenta, String tipoCuentaDescripcion, String identificacionCliente)
             throws PersonaException, ClienteException, TipoCuentaException, CuentaException {
         Cliente cliente = clienteService.buscarClientePorIdentificacion(identificacionCliente);
@@ -126,6 +138,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ActivarCuentaResponse activarCuenta(ActivarCuentaRequest activarCuentaRequest) throws CuentaException, TipoCuentaException, PersonaException, ClienteException {
         Cuenta cuenta = buscarCuentaPorNumeroCuentaTipoCuentaIdentificacionCliente(activarCuentaRequest.getNumeroCuenta(),
                 activarCuentaRequest.getTipoCuentaDescripcion(), activarCuentaRequest.getIdentificacion());
@@ -146,6 +159,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public String eliminarCuenta(String numeroCuenta, String tipoCuenta, boolean force) throws CuentaException, TipoCuentaException {
         Cuenta cuenta = buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuenta);
         if (force) {
@@ -163,6 +177,7 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Cuenta> consultarListadoCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException {
         return clienteService.buscarClientePorIdentificacion(identificacion).getCuentas();
     }

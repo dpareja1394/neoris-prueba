@@ -1,4 +1,4 @@
-package com.neoris.tst.pruebatecnica.service;
+package com.neoris.tst.pruebatecnica.service.implementation;
 
 import com.neoris.tst.pruebatecnica.domain.Cliente;
 import com.neoris.tst.pruebatecnica.domain.Genero;
@@ -14,7 +14,12 @@ import com.neoris.tst.pruebatecnica.request.CrearUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.InactivarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.request.ModificarUsuarioRequest;
 import com.neoris.tst.pruebatecnica.response.*;
+import com.neoris.tst.pruebatecnica.service.ClienteService;
+import com.neoris.tst.pruebatecnica.service.GeneroService;
+import com.neoris.tst.pruebatecnica.service.PersonaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,6 +45,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public CrearUsuarioResponse crearUsuario(CrearUsuarioRequest crearUsuarioRequest)
             throws GeneroException, PersonaException {
 
@@ -58,6 +64,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cliente buscarClientePorNombreYEstado(String nombre, boolean estado)
             throws PersonaException, ClienteException {
         Persona persona = personaService.buscarPersonaPorNombreYEstado(nombre, estado);
@@ -68,6 +75,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public InactivarUsuarioResponse inactivarUsuario(InactivarUsuarioRequest inactivarUsuarioRequest)
             throws PersonaException, ClienteException {
         // Consultar Cliente
@@ -93,6 +101,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ActivarUsuarioResponse activarUsuario(ActivarUsuarioRequest activarUsuarioRequest)
             throws PersonaException, ClienteException {
         Cliente cliente = buscarClientePorIdentificacion(activarUsuarioRequest.getIdentificacion());
@@ -117,14 +126,14 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ModificarUsuarioResponse modificarUsuario(ModificarUsuarioRequest modificarUsuarioRequest)
             throws GeneroException, PersonaException, ClienteException {
         Cliente cliente = buscarClientePorIdentificacion(modificarUsuarioRequest.getIdentificacion());
         Persona persona = cliente.getPersona();
         Genero genero = persona.getGenero();
 
-        persona = ModificarUsuarioMapper.requestToPersona(modificarUsuarioRequest, persona, genero);
-        persona = personaRepository.save(persona);
+        persona = personaRepository.save(ModificarUsuarioMapper.requestToPersona(modificarUsuarioRequest, persona, genero));
         cliente.setContrasena(modificarUsuarioRequest.getContrasena());
         cliente = clienteRepository.save(cliente);
 
@@ -132,34 +141,40 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cliente buscarClientePorPersonaId(Integer personaId) throws ClienteException {
         return clienteRepository.findByPersonaId(personaId).orElseThrow(
                         () ->new ClienteException(CLIENTE_NO_EXISTE_MENSAJE));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BuscarUsuarioResponse> buscarTodosLosClientes() {
         return BuscarUsuarioMapper.domainToResponseList(clienteRepository.findAll());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BuscarUsuarioResponse> buscarTodosLosClientesPorEstado(boolean estado) {
         return BuscarUsuarioMapper.domainToResponseList(clienteRepository.findByEstado(estado));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BuscarUsuarioResponse buscarUsuarioPorIdentificacion(String identificacion)
             throws PersonaException, ClienteException {
         return BuscarUsuarioMapper.domainToResponse(buscarClientePorIdentificacion(identificacion));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Cliente buscarClientePorIdentificacion(String identificacion) throws PersonaException, ClienteException {
         Persona persona = personaService.buscarPersonaPorIdentificacion(identificacion);
         return buscarClientePorPersonaId(persona.getId());
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public String eliminarUsuario(String identificacion) throws PersonaException, ClienteException {
         Cliente cliente = buscarClientePorIdentificacion(identificacion);
         if(!cliente.getCuentas().isEmpty()) {

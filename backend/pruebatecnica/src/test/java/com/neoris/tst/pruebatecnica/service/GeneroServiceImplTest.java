@@ -3,6 +3,7 @@ package com.neoris.tst.pruebatecnica.service;
 import com.neoris.tst.pruebatecnica.domain.Genero;
 import com.neoris.tst.pruebatecnica.exception.GeneroException;
 import com.neoris.tst.pruebatecnica.repository.GeneroRepository;
+import com.neoris.tst.pruebatecnica.service.implementation.GeneroServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

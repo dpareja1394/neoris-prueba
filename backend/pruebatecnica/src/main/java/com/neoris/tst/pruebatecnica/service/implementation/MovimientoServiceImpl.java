@@ -1,4 +1,4 @@
-package com.neoris.tst.pruebatecnica.service;
+package com.neoris.tst.pruebatecnica.service.implementation;
 
 import com.neoris.tst.pruebatecnica.domain.Cuenta;
 import com.neoris.tst.pruebatecnica.domain.Movimiento;
@@ -11,9 +11,14 @@ import com.neoris.tst.pruebatecnica.request.RealizarMovimientoRequest;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
 import com.neoris.tst.pruebatecnica.response.RealizarMovimientoResponse;
+import com.neoris.tst.pruebatecnica.service.CuentaService;
+import com.neoris.tst.pruebatecnica.service.MovimientoService;
+import com.neoris.tst.pruebatecnica.service.TipoMovimientoService;
 import com.neoris.tst.pruebatecnica.utility.Constante;
 import com.neoris.tst.pruebatecnica.utility.FechaUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,7 +27,7 @@ import java.util.List;
 import static com.neoris.tst.pruebatecnica.utility.MensajeExcepcionService.*;
 
 @Service
-public class MovimientoServiceImpl implements MovimientoService{
+public class MovimientoServiceImpl implements MovimientoService {
 
     private final MovimientoRepository movimientoRepository;
     private final CuentaService cuentaService;
@@ -37,6 +42,7 @@ public class MovimientoServiceImpl implements MovimientoService{
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public RealizarMovimientoResponse realizarMovimiento(RealizarMovimientoRequest movimientoRequest)
             throws TipoCuentaException, CuentaException,
             TipoMovimientoException, MovimientoException {
@@ -100,6 +106,7 @@ public class MovimientoServiceImpl implements MovimientoService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MovimientoPorFechaPorUsuarioResponse> buscarMovimientosEnLasCuentasDeUnCliente
             (String identificacion, LocalDate desde, LocalDate hasta) throws PersonaException, ClienteException {
         List<Integer> idsCuentas = cuentaService.
@@ -112,6 +119,7 @@ public class MovimientoServiceImpl implements MovimientoService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MovimientoPorFechaPorCuentaResponse> buscarMovimientosEnCuenta(String numeroCuenta, String tipoCuentaDescripcion,
                                                                                LocalDate desde, LocalDate hasta)
             throws CuentaException, TipoCuentaException {
