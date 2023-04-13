@@ -46,14 +46,8 @@ public class MovimientoServiceImpl implements MovimientoService {
     public RealizarMovimientoResponse realizarMovimiento(RealizarMovimientoRequest movimientoRequest)
             throws TipoCuentaException, CuentaException,
             TipoMovimientoException, MovimientoException {
-        //1. Buscar la cuenta por número y tipo de cuenta
-        Cuenta cuenta = cuentaService
-                .buscarCuentaPorNumeroYTipoCuenta(movimientoRequest.getNumeroCuenta(),
-                        movimientoRequest.getTipoCuentaDescripcion());
-
-        if (!cuenta.getEstado()) {
-            throw new CuentaException(MOVIMIENTO_ERROR_CUENTA_INACTIVA);
-        }
+        Cuenta cuenta = cuentaService.consultarYValidarCuenta(movimientoRequest.getNumeroCuenta(),
+                movimientoRequest.getTipoCuentaDescripcion());
 
         BigDecimal saldo = cuenta.getSaldoActual();
 
@@ -62,20 +56,27 @@ public class MovimientoServiceImpl implements MovimientoService {
                 .buscarPorDescripcionYEstado(movimientoRequest.getTipoMovimientoDescripcion(), true);
 
         //3. Validar si es retiro o consignación
+        Movimiento movimiento = validarRetiroConsignacion(movimientoRequest, cuenta, tipoMovimiento);
+
+
+        return RealizarMovimientoMapper.domainToResponse(movimiento, saldo);
+    }
+
+    private Movimiento validarRetiroConsignacion(RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento)
+            throws MovimientoException {
         Movimiento movimiento;
-        if(tipoMovimiento.getAbreviatura().trim().equals(Constante.TIPO_MOVIMIENTO_RETIRO)) {
+        if (tipoMovimiento.getAbreviatura().trim().equals(Constante.TIPO_MOVIMIENTO_RETIRO)) {
             movimiento = efectuarRetiro(movimientoRequest, cuenta, tipoMovimiento);
         } else {
             movimiento = efectuarDeposito(movimientoRequest, cuenta, tipoMovimiento);
         }
-
-        return RealizarMovimientoMapper.domainToResponse(movimiento, saldo);
+        return movimiento;
     }
 
     private Movimiento efectuarRetiro
             (RealizarMovimientoRequest movimientoRequest, Cuenta cuenta, TipoMovimiento tipoMovimiento)
             throws MovimientoException {
-        if(BigDecimal.ZERO.compareTo(cuenta.getSaldoActual()) == 0) {
+        if (BigDecimal.ZERO.compareTo(cuenta.getSaldoActual()) == 0) {
             throw new MovimientoException(SALDO_NO_DISPONIBLE);
         }
 

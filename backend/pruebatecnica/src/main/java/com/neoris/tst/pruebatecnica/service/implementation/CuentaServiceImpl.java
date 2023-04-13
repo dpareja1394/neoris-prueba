@@ -181,4 +181,15 @@ public class CuentaServiceImpl implements CuentaService {
     public List<Cuenta> consultarListadoCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException {
         return clienteService.buscarClientePorIdentificacion(identificacion).getCuentas();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Cuenta consultarYValidarCuenta(String numeroCuenta, String tipoCuentaDescripcion) throws CuentaException, TipoCuentaException {
+        Cuenta cuenta = buscarCuentaPorNumeroYTipoCuenta(numeroCuenta, tipoCuentaDescripcion);
+
+        if (!cuenta.getEstado()) {
+            throw new CuentaException(MOVIMIENTO_ERROR_CUENTA_INACTIVA);
+        }
+        return cuenta;
+    }
 }

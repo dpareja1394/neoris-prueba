@@ -42,4 +42,6 @@ public interface CuentaService {
 
     List<Cuenta> consultarListadoCuentasPorUsuario(String identificacion) throws PersonaException, ClienteException;
 
+    public Cuenta consultarYValidarCuenta(String numeroCuenta, String tipoCuentaDescripcion) throws CuentaException, TipoCuentaException;
+
 }
