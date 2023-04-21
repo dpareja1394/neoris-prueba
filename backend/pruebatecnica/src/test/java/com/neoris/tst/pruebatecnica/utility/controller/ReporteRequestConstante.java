@@ -1,4 +1,4 @@
-package com.neoris.tst.pruebatecnica.utility;
+package com.neoris.tst.pruebatecnica.utility.controller;
 
 import java.time.LocalDate;
 

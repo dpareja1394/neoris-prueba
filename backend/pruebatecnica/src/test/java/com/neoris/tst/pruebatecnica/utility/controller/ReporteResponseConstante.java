@@ -1,7 +1,8 @@
-package com.neoris.tst.pruebatecnica.utility;
+package com.neoris.tst.pruebatecnica.utility.controller;
 
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.MovimientoPorFechaPorUsuarioResponse;
+import com.neoris.tst.pruebatecnica.utility.FechaUtil;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

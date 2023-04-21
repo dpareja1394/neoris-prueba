@@ -1,4 +1,4 @@
-package com.neoris.tst.pruebatecnica.utility;
+package com.neoris.tst.pruebatecnica.utility.controller;
 
 import com.neoris.tst.pruebatecnica.response.ActivarCuentaResponse;
 import com.neoris.tst.pruebatecnica.response.BuscarCuentaResponse;
